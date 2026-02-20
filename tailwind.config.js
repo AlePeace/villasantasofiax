@@ -8,10 +8,11 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        montecatini: ["'var(--font-montecatini)'", "serif"],
-        nunito: ["'var(--font-nunito)'", "sans-serif"],
+        montecatini: ["var(--font-montecatini)", "serif"],
+        nunito: ["var(--font-nunito)", "sans-serif"],
       },
       colors: {
+        terracotta: "#FF9F51",
         red: "#C53452",
         green: "#57A691",
         ocra: "#EFAC53",
@@ -19,7 +20,10 @@ module.exports = {
         lightgreen: "#A0B898",
         lightocra: "#FFAB67",
         lightblue: "#00ABD5",
-      }
+        orangelogo: "#ee954c",
+        gradientbrown: "#F3EADF",
+        gray: "#434343",
+      },
     },
   },
   plugins: [],

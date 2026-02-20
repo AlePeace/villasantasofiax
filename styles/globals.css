@@ -1,5 +1,21 @@
-@import url("https://fonts.googleapis.com/css2?family=Aboreto&family=Poppins:ital,wght@0,400;0,700;1,400;1,700&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer utilities {
+  .font-montecatini {
+    font-variant-ligatures: none;
+  }
+}
+::-webkit-scrollbar {
+  @apply lg:w-1;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  @apply lg:bg-blue;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply lg:bg-lightblue lg:rounded-full lg:transition-all lg:duration-300 lg:ease-in-out;
+}

@@ -1,10 +1,12 @@
 import { Button } from "components/Button";
 
-export const Buttons = ({ blocks, className = "", variant = "default" }) => {
+export const Buttons = ({ blocks, className = "", variant = "default", decoration }) => {
   const getVariantStyles = () => {
     switch (variant) {
       case "hero":
         return "flex gap-6 justify-center";
+      case "villaHome":
+        return "flex justify-start";
       case "default":
       default:
         return "flex gap-4";
@@ -18,18 +20,20 @@ export const Buttons = ({ blocks, className = "", variant = "default" }) => {
     if (variant === "map") {
       return "px-10 py-4 uppercase rounded-full bg-blue text-white text-[10px] lg:text-sm font-semibold transition-all duration-300 hover:bg-white hover:text-blue";
     }
+    if (variant === "villaHome") {
+      return "relative px-8 lg:px-16 py-4 lg:py-6 uppercase rounded-sm bg-terracotta text-white text-xs lg:text-sm tracking-wide font-montecatini font-noraml text-base lg:text-2xl transition-all duration-300 hover:bg-blue hover:border-blue";
+    }
 
-    // Default variant
     return "px-10 py-4 uppercase rounded-full bg-blue text-yellow font-semibold transition-all duration-300 hover:bg-yellow hover:text-blue";
   };
 
   return (
     <div className={`${getVariantStyles()} ${className}`}>
-      {blocks.map((block, index) => {
+      {blocks?.map((block, index) => {
         if (block.name === "core/button") {
           return (
             <Button
-              key={index}
+              key={block.id || index}
               url={block.attributes.url}
               content={block.attributes.content}
               className={getButtonStyles()}
@@ -38,6 +42,11 @@ export const Buttons = ({ blocks, className = "", variant = "default" }) => {
         }
         return null;
       })}
+      {decoration && (
+        <div className="absolute inset-0 pointer-events-none">
+          {decoration}
+        </div>
+      )}
     </div>
   );
 };

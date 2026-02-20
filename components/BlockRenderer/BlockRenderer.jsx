@@ -1,3 +1,6 @@
+import { HeroHome } from "components/HeroHome/HeroHome";
+import { VillaHome } from "components/VillaHome";
+
 export const BlockRenderer = ({ blocks }) => {
   return blocks.map((block) => {
     switch (block.name) {
@@ -7,7 +10,14 @@ export const BlockRenderer = ({ blocks }) => {
         console.log("GROUP BLOCK: ", block);
         console.log("GROUP NAME: ", groupName);
         switch (groupName) {
-            
+          case "HeroHome":
+            return <HeroHome key={block.id} blocks={block} />;
+
+          case "VillaHome":
+            return <VillaHome key={block.id} blocks={block} />;
+
+          default:
+            return null;
         }
       }
     }

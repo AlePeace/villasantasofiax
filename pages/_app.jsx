@@ -3,6 +3,7 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import localFont from "next/font/local";
 import { Nunito_Sans } from "next/font/google";
+import { useLenis } from "utils/useLenis";
 
 config.autoAddCss = false;
 
@@ -25,7 +26,12 @@ const nunito = Nunito_Sans({
 });
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+  useLenis();
+  return (
+    <div className={`${montecatini.variable} ${nunito.variable}`}>
+      <Component {...pageProps} />
+    </div>
+  );
 }
 
 export default MyApp;
