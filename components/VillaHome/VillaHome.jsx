@@ -95,32 +95,6 @@ export const VillaHome = ({ blocks }) => {
                     <Buttons
                       blocks={buttons.innerBlocks}
                       variant="villaHome"
-                      decoration={
-                        <svg className="w-full h-full" width="300" height="20">
-                          <defs>
-                            <filter id="rough">
-                              <feTurbulence
-                                type="fractalNoise"
-                                baseFrequency="0.02"
-                                numOctaves="2"
-                                seed="2"
-                              />
-                              <feDisplacementMap in="SourceGraphic" scale="6" />
-                            </filter>
-                          </defs>
-
-                          <rect
-                            x="20"
-                            y="20"
-                            width="260"
-                            height="160"
-                            fill="none"
-                            stroke="#000"
-                            strokeWidth="3"
-                            filter="url(#rough)"
-                          />
-                        </svg>
-                      }
                     />
                   </div>
                 )}
