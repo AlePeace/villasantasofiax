@@ -116,7 +116,7 @@ export const VillaHome = ({ blocks }) => {
                             height="160"
                             fill="none"
                             stroke="#000"
-                            stroke-width="3"
+                            strokeWidth="3"
                             filter="url(#rough)"
                           />
                         </svg>
