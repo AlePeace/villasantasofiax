@@ -35,8 +35,8 @@ export const SolariumHome = ({ blocks }) => {
       </div>
       <div className="w-full pt-10 lg:pt-20">
         <div className="w-full flex flex-col lg:flex-row lg:items-center lg:h-screen">
-          <div className="lg:basis-1/2">
-            <div className="aspect-square bg-card flex justify-center items-center lg:-rotate-12 lg:origin-bottom-right">
+          <div className="lg:basis-1/2 h-full">
+            <div className="bg-card h-full flex justify-center items-center lg:-rotate-12 lg:origin-bottom-right">
               <div className="p-20 flex flex-col gap-10">
                 <div className="mx-auto">
                   <svg
@@ -94,12 +94,12 @@ export const SolariumHome = ({ blocks }) => {
               </div>
             </div>
           </div>
-          <div className="lg:basis-1/2">
+          <div className="lg:basis-1/2 h-full">
             {image && (
               <Image
                 src={image.attributes?.url}
                 alt={image.attributes?.alt || "Image"}
-                className={`object-cover w-full w-[${image.attributes?.width}px] h-[${image.attributes?.height}px] aspect-[${image.attributes?.width}/${image.attributes?.height}] pointer-events-none will-change-transform`}
+                className={`object-cover w-full w-[${image.attributes?.width}px] h-[${image.attributes?.height}px] aspect-[${image.attributes?.width}/${image.attributes?.height}] !h-full pointer-events-none will-change-transform`}
                 width={image.attributes?.width}
                 height={image.attributes?.height}
                 priority
