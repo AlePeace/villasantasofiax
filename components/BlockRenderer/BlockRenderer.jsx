@@ -1,3 +1,4 @@
+import { CameraHome } from "components/CameraHome/CameraHome";
 import { HeroHome } from "components/HeroHome/HeroHome";
 import { VillaHome } from "components/VillaHome";
 
@@ -15,6 +16,9 @@ export const BlockRenderer = ({ blocks }) => {
 
           case "VillaHome":
             return <VillaHome key={block.id} blocks={block} />;
+
+          case "CameraHome":
+            return <CameraHome key={block.id} blocks={block} />;
 
           default:
             return null;

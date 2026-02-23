@@ -8,8 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 export const useLenis = () => {
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      lerp: 0.07,
       direction: "vertical",
       gestureDirection: "vertical",
       smooth: true,
@@ -18,14 +17,17 @@ export const useLenis = () => {
       infinite: false,
     });
 
-    // Integrazione con ScrollTrigger
-    lenis.on("scroll", ScrollTrigger.update);
-    gsap.ticker.add((time) => {
+    const raf = (time) => {
       lenis.raf(time * 1000);
-    });
+    };
+
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
 
     return () => {
+      lenis.off("scroll", ScrollTrigger.update);
+      gsap.ticker.remove(raf);
       lenis.destroy();
     };
   }, []);

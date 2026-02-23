@@ -23,6 +23,7 @@ module.exports = {
         orangelogo: "#ee954c",
         gradientbrown: "#F3EADF",
         gray: "#434343",
+        peach: "#FCD2B0",
       },
     },
   },

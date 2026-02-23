@@ -1,6 +1,11 @@
 import { Button } from "components/Button";
 
-export const Buttons = ({ blocks, className = "", variant = "default", decoration }) => {
+export const Buttons = ({
+  blocks,
+  className = "",
+  variant = "default",
+  decoration,
+}) => {
   const getVariantStyles = () => {
     switch (variant) {
       case "hero":
@@ -24,6 +29,10 @@ export const Buttons = ({ blocks, className = "", variant = "default", decoratio
       return "relative px-8 lg:px-16 py-4 lg:py-6 uppercase rounded-sm bg-terracotta text-white text-xs lg:text-sm tracking-wide font-montecatini font-noraml text-base lg:text-2xl transition-all duration-300 hover:bg-blue hover:border-blue";
     }
 
+    if (variant === "CameraHome") {
+      return "relative px-8 lg:px-16 py-4 lg:py-6 uppercase rounded-sm bg-lightblue text-white text-xs lg:text-sm tracking-wide font-montecatini font-noraml text-base lg:text-2xl transition-all duration-300 hover:bg-blue hover:border-blue";
+    }
+
     return "px-10 py-4 uppercase rounded-full bg-blue text-yellow font-semibold transition-all duration-300 hover:bg-yellow hover:text-blue";
   };
 
@@ -43,9 +52,7 @@ export const Buttons = ({ blocks, className = "", variant = "default", decoratio
         return null;
       })}
       {decoration && (
-        <div className="absolute inset-0 pointer-events-none">
-          {decoration}
-        </div>
+        <div className="absolute inset-0 pointer-events-none">{decoration}</div>
       )}
     </div>
   );
