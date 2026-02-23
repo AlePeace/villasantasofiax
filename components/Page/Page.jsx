@@ -7,7 +7,10 @@ export const Page = (props) => {
   console.log("PAGE PORPS:", props);
   return (
     <div>
-      <Head>{parse(props.seo?.fullHead)}</Head>
+      <Head>
+        <title>{props.seo?.title}</title>
+        {parse(props.seo?.fullHead)}
+        </Head>
       <MainMenu items={props.mainMenuItems} />
       <BlockRenderer blocks={props.blocks} />
     </div>

@@ -17,6 +17,7 @@ export const getPageStaticProps = async (context) => {
             title
             blocks(postTemplate: false)
             seo {
+              title
               fullHead
             }
           }

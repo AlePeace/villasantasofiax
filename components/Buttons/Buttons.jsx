@@ -30,7 +30,7 @@ export const Buttons = ({
     }
 
     if (variant === "CameraHome") {
-      return "relative px-8 lg:px-16 py-4 lg:py-6 uppercase rounded-sm bg-lightblue text-white text-xs lg:text-sm tracking-wide font-montecatini font-noraml text-base lg:text-2xl transition-all duration-300 hover:bg-blue hover:border-blue";
+      return "absolute w-full lg:w-fit left-1/2 -translate-x-1/2 px-8 lg:px-16 py-4 lg:py-6 z-10 uppercase rounded-sm bg-lightblue text-white text-xs lg:text-sm tracking-wide font-montecatini font-noraml text-base lg:text-2xl transition-all duration-300 hover:bg-blue hover:border-blue text-center";
     }
 
     return "px-10 py-4 uppercase rounded-full bg-blue text-yellow font-semibold transition-all duration-300 hover:bg-yellow hover:text-blue";
