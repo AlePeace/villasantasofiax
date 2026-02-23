@@ -1,5 +1,6 @@
 import { CameraHome } from "components/CameraHome/CameraHome";
 import { HeroHome } from "components/HeroHome/HeroHome";
+import { SolariumHome } from "components/SolariumHome";
 import { VillaHome } from "components/VillaHome";
 
 export const BlockRenderer = ({ blocks }) => {
@@ -19,6 +20,9 @@ export const BlockRenderer = ({ blocks }) => {
 
           case "CameraHome":
             return <CameraHome key={block.id} blocks={block} />;
+
+          case "SolariumHome":
+            return <SolariumHome key={block.id} blocks={block} />;
 
           default:
             return null;
