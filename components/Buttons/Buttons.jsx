@@ -37,6 +37,10 @@ export const Buttons = ({
       return "w-full lg:w-fit px-8 lg:px-16 py-4 lg:py-6 z-10 uppercase rounded-sm bg-terracotta text-white text-xs lg:text-sm tracking-wide font-montecatini font-noraml text-base lg:text-2xl transition-all duration-300 hover:bg-blue hover:border-blue text-center";
     }
 
+    if (variant === "BookExp") {
+      return "w-full lg:w-fit px-8 lg:px-16 py-4 lg:py-6 z-10 uppercase rounded-sm bg-blue text-white text-xs lg:text-sm tracking-wide font-montecatini font-noraml text-base lg:text-2xl transition-all duration-300 hover:bg-lightblue hover:border-lightblue text-center";
+    }
+
     return "px-10 py-4 uppercase rounded-full bg-blue text-yellow font-semibold transition-all duration-300 hover:bg-yellow hover:text-blue";
   };
 

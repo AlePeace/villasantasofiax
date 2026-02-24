@@ -36,7 +36,7 @@ export const CilentoHome = ({ blocks }) => {
   );
 
   return (
-    <section className="pt-10 lg:pt-36 px-5 lg:px-40 relative">
+    <section className="pt-10 lg:pt-36 px-5 lg:px-40 relative z-20">
       <div className="absolute top-0 bottom-0 right-44 h-full">
         <svg
           width="294"
@@ -169,9 +169,9 @@ export const CilentoHome = ({ blocks }) => {
           )}
         </div>
       </div>
-      <div className="pt-10 lg:pt-36">
+      <div className="pt-10 lg:pt-36 relative z-50 overflow-visible">
         {secondCover && (
-          <div className="relative p-5 shadow-2xl lg:w-1/2 origin-bottom-right -rotate-12">
+          <div className="relative z-30 shadow-2xl bg-white p-5 lg:w-1/2 origin-bottom-right -rotate-12">
             <Cover
               background={getCoverBackground(secondCover)}
               className="!aspect-video !h-full w-full !justify-end !items-end p-5 lg:p-8"
