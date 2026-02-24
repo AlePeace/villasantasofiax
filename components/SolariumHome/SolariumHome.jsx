@@ -36,7 +36,7 @@ export const SolariumHome = ({ blocks }) => {
       <div className="w-full pt-10 lg:pt-20">
         <div className="w-full flex flex-col lg:flex-row lg:items-center lg:h-screen">
           <div className="lg:basis-1/2 h-full">
-            <div className="bg-card h-full flex justify-center items-center lg:-rotate-12 lg:origin-bottom-right">
+            <div className="bg-card h-full flex justify-center items-center">
               <div className="p-20 flex flex-col gap-10">
                 <div className="mx-auto">
                   <svg

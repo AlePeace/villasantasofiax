@@ -1,11 +1,11 @@
 import Image from "next/image";
 
-export const Cover = ({ children, background }) => {
+export const Cover = ({ children, background, className = "", contentClassName = "" }) => {
   const hasBackgroundVideo = background?.backgroundVideo?.url;
   const hasBackgroundImage = background?.backgroundImage?.url;
 
   return (
-    <div className="h-screen relative min-h-[400px] flex justify-center items-center overflow-hidden">
+    <div className={`h-screen relative min-h-[400px] flex justify-center items-center overflow-hidden ${className}`}>
       {hasBackgroundVideo && (
         <video
           className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none will-change-transform" 
@@ -46,7 +46,7 @@ export const Cover = ({ children, background }) => {
           <div className="absolute inset-0 z-0" />
         )}
 
-      <div className="max-w-5xl z-10">{children}</div>
+      <div className={`max-w-5xl z-10 ${contentClassName}`}>{children}</div>
     </div>
   );
 };

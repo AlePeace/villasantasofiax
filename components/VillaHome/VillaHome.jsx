@@ -55,7 +55,7 @@ export const VillaHome = ({ blocks }) => {
           <Heading
             level={topHeading.attributes?.level}
             content={topHeading.attributes?.content}
-            className="font-montecatini font-normal text-5xl lg:text-7xl xl:text-8xl text-blue"
+            className="font-montecatini font-normal text-5xl lg:text-6xl xl:text-7xl text-blue"
           />
         )}
       </div>
