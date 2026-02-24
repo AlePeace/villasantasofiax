@@ -1,6 +1,12 @@
+import { useRef } from "react";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
 import Image from "next/image";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export const SolariumHome = ({ blocks }) => {
   const innerBlocks = blocks?.innerBlocks || [];
@@ -14,6 +20,45 @@ export const SolariumHome = ({ blocks }) => {
   const sectionHeadingSubtitle = headings[1];
   const sectionHeadingCard = headings[2];
   const sectionHeadingLink = headings[3];
+
+  const sectionRef = useRef(null);
+  const leftPanelRef = useRef(null);
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+
+      mm.add("(min-width: 1024px)", () => {
+        gsap.set(leftPanelRef.current, {
+          xPercent: -70,
+          yPercent: 100,
+          rotation: -25,
+          transformOrigin: "0% 100%",
+        });
+
+        gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top top",
+              end: "+=250%",
+              pin: true,
+              scrub: 1,
+              invalidateOnRefresh: true,
+            },
+          })
+          .to(leftPanelRef.current, {
+            xPercent: 0,
+            yPercent: 0,
+            rotation: 0,
+            ease: "none",
+          });
+      });
+
+      return () => mm.revert();
+    },
+    { scope: sectionRef },
+  );
 
   return (
     <section className="w-full h-full overflow-hidden">
@@ -34,8 +79,8 @@ export const SolariumHome = ({ blocks }) => {
         )}
       </div>
       <div className="w-full pt-10 lg:pt-20">
-        <div className="w-full flex flex-col lg:flex-row lg:items-center lg:h-screen">
-          <div className="lg:basis-1/2 h-full">
+        <div ref={sectionRef} className="w-full flex flex-col lg:flex-row lg:items-center lg:h-screen">
+          <div ref={leftPanelRef} className="lg:basis-1/2 h-full">
             <div className="bg-card h-full flex justify-center items-center">
               <div className="p-20 flex flex-col gap-10">
                 <div className="mx-auto">
