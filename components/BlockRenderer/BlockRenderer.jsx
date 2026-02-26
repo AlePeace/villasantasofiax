@@ -1,7 +1,10 @@
+import { AnimationCardCamere } from "components/AnimationCardCamere";
 import { AnimationCardHome } from "components/AnimationCardHome";
 import { BookExpHome } from "components/BookExpHome/BookExpHome";
 import { CameraHome } from "components/CameraHome/CameraHome";
 import { CilentoHome } from "components/CilentoHome";
+import { DescriptionCamere } from "components/DescriptionCamere/DescriptionCamere";
+import { HeroCamere } from "components/HeroCamere/HeroCamere";
 import { HeroHome } from "components/HeroHome/HeroHome";
 import { SuggestHome } from "components/SuggestHome";
 import { VillaHome } from "components/VillaHome";
@@ -35,6 +38,15 @@ export const BlockRenderer = ({ blocks }) => {
 
           case "SuggestHome":
             return <SuggestHome key={block.id} blocks={block} />;
+
+          case "HeroCamere":
+            return <HeroCamere key={block.id} blocks={block} />;
+
+          case "DescriptionCamere":
+            return <DescriptionCamere key={block.id} blocks={block} />;
+
+          case "AnimationCardCamere":
+            return <AnimationCardCamere key={block.id} blocks={block} />;
 
           default:
             return null;

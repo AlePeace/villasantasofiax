@@ -22,6 +22,16 @@ export const getPageStaticProps = async (context) => {
             }
           }
         }
+        menus {
+          nodes {
+            menuItems {
+              nodes {
+                uri
+                label
+              }
+            }
+          }
+        }
       }
     `,
     variables: {
@@ -42,6 +52,7 @@ export const getPageStaticProps = async (context) => {
     props: {
       seo: data.nodeByUri.seo,
       blocks,
+      menus: data.menus.nodes,
     },
   };
 };

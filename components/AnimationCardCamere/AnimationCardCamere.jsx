@@ -9,42 +9,63 @@ import { Paragraph } from "components/Paragraph";
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const fallbackPalette = [
-  { bg: "#FF9E4E", text: "#FFFFFF" },
+  { bg: "#C53452", text: "#FFFFFF" },
+  { bg: "#57A691", text: "#FFFFFF" },
+  { bg: "#EFAC53", text: "#FFFFFF" },
+  { bg: "#1F5189", text: "#FFFFFF" },
   { bg: "#A0B898", text: "#FFFFFF" },
+  { bg: "#FFAB67", text: "#FFFFFF" },
   { bg: "#00ABD5", text: "#FFFFFF" },
+];
+
+const fallbackPaletteRight = [
+  { bg: "#FFB87D21", text: "#6C6C6C" },
+  { bg: "#49907D1A", text: "#6C6C6C" },
+  { bg: "#FFB87D21", text: "#6C6C6C" },
+  { bg: "#1F51891A", text: "#6C6C6C" },
+  { bg: "#A0B8984D", text: "#6C6C6C" },
+  { bg: "#FFAB674D", text: "#6C6C6C" },
+  { bg: "#00ABD51A", text: "#6C6C6C" },
 ];
 
 const parseCardFromGroup = (group, index) => {
   const { innerBlocks = [] } = group;
 
-  const image = innerBlocks.find((b) => b.name === "core/image");
+  const images = innerBlocks.filter((b) => b.name === "core/image");
+  const imgvert = images[0] || null;
+  const imgoriz = images[1] || null;
   const headings = innerBlocks.filter((b) => b.name === "core/heading");
   const paragraph = innerBlocks.find((b) => b.name === "core/paragraph");
 
-  const colors = fallbackPalette[index % fallbackPalette.length];
-  const bg = group?.attributes?.style?.color?.background || colors.bg;
-  const text = group?.attributes?.style?.color?.text || colors.text;
+  const leftColors = fallbackPalette[index % fallbackPalette.length];
+  const rightColors = fallbackPaletteRight[index % fallbackPaletteRight.length];
+
+  const leftBg = group?.attributes?.style?.color?.background || leftColors.bg;
+  const leftText = group?.attributes?.style?.color?.text || leftColors.text;
+
+  const rightBg =
+    group?.attributes?.rightStyle?.color?.background || rightColors.bg;
+  const rightText =
+    group?.attributes?.rightStyle?.color?.text || rightColors.text;
 
   return {
     id: group?.clientId || `card-${index}`,
-    image,
+    imgvert,
+    imgoriz,
     title: headings[0],
     subtitle: headings[1],
     paragraph,
     link: headings[2],
-    bg,
-    text,
+    bg: leftBg,
+    text: leftText,
+    rightBg,
+    rightText,
   };
 };
 
-export const AnimationCardHome = ({ blocks }) => {
+export const AnimationCardCamere = ({ blocks }) => {
   const { innerBlocks = [] } = blocks;
-
-  const sectionTitle = innerBlocks[0];
-  const sectionSubtitle = innerBlocks[1];
-  const cardGroups = innerBlocks.filter(
-    (b, i) => b.name === "core/group" && i > 1,
-  );
+  const cardGroups = innerBlocks.filter((b) => b.name === "core/group");
   const cards = cardGroups.map(parseCardFromGroup);
 
   const sectionRef = useRef(null);
@@ -90,6 +111,7 @@ export const AnimationCardHome = ({ blocks }) => {
           willChange: "transform",
           force3D: true,
         });
+
         lefts.forEach((el, idx) => {
           const isFirst = idx === 0;
           // primo left parte già a metà animazione
@@ -173,24 +195,6 @@ export const AnimationCardHome = ({ blocks }) => {
 
   return (
     <>
-      {/* Titolo sezione (fuori animazione) */}
-      <div className="space-y-3 py-12 text-center">
-        {sectionTitle && (
-          <Heading
-            level={sectionTitle.attributes?.level}
-            content={sectionTitle.attributes?.content}
-            className="font-montecatini font-normal text-5xl lg:text-7xl xl:text-8xl text-blue"
-          />
-        )}
-        {sectionSubtitle && (
-          <Heading
-            level={sectionSubtitle.attributes?.level}
-            content={sectionSubtitle.attributes?.content}
-            className="font-montecatini font-normal text-2xl lg:text-4xl xl:text-5xl text-blue"
-          />
-        )}
-      </div>
-
       {/* Desktop animated section */}
       <section
         ref={sectionRef}
@@ -198,7 +202,8 @@ export const AnimationCardHome = ({ blocks }) => {
         className="relative hidden lg:block h-screen overflow-hidden"
       >
         {cards.map((card, i) => {
-          const img = imgAttr(card.image);
+          const img = imgAttr(card.imgvert);
+          const imgoriz = imgAttr(card.imgoriz);
           return (
             <div
               key={card.id}
@@ -251,14 +256,31 @@ export const AnimationCardHome = ({ blocks }) => {
                   data-card-right
                   className="basis-1/2 h-full overflow-hidden"
                 >
-                  <div data-card-right-reveal className="h-full w-full">
-                    {card.image && (
+                  <div
+                    data-card-right-reveal
+                    style={{
+                      backgroundColor: card.rightBg,
+                      color: card.rightText,
+                    }}
+                    className="h-full w-full"
+                  >
+                    {img && img.url && (
                       <Image
                         src={img.url}
                         alt={img.alt || "Card image"}
                         width={img.width || 1600}
                         height={img.height || 900}
-                        className="w-full h-full object-cover"
+                        className="w-1/2 h-1/2 object-cover"
+                        priority={i === 0}
+                      />
+                    )}
+                    {img && img.url && (
+                      <Image
+                        src={img.url}
+                        alt={img.alt || "Card image"}
+                        width={img.width || 1600}
+                        height={img.height || 900}
+                        className="w-1/2 h-1/2 object-cover"
                         priority={i === 0}
                       />
                     )}
@@ -287,12 +309,6 @@ export const AnimationCardHome = ({ blocks }) => {
                     className="font-montecatini font-normal text-5xl"
                   />
                 )}
-                {card.paragraph && (
-                  <Paragraph
-                    content={card.paragraph.attributes?.content}
-                    className="font-nunito font-light text-base"
-                  />
-                )}
                 {card.subtitle && (
                   <Heading
                     level={card.subtitle.attributes?.level}
@@ -300,9 +316,15 @@ export const AnimationCardHome = ({ blocks }) => {
                     className="font-montecatini font-normal text-3xl"
                   />
                 )}
+                {card.paragraph && (
+                  <Paragraph
+                    content={card.paragraph.attributes?.content}
+                    className="font-nunito font-light text-base"
+                  />
+                )}
               </div>
 
-              {card.image && (
+              {img && img.url && (
                 <Image
                   src={img.url}
                   alt={img.alt || "Card image"}

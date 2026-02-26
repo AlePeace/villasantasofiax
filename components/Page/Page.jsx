@@ -11,7 +11,7 @@ export const Page = (props) => {
         <title>{props.seo?.title}</title>
         {parse(props.seo?.fullHead)}
         </Head>
-      <MainMenu items={props.mainMenuItems} />
+      <MainMenu menuData={props.menus} />
       <BlockRenderer blocks={props.blocks} />
     </div>
   );
