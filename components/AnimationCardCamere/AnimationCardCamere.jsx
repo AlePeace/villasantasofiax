@@ -198,7 +198,7 @@ export const AnimationCardCamere = ({ blocks }) => {
       {/* Desktop animated section */}
       <section
         ref={sectionRef}
-        id="cardScroller"
+        id="cardScrollerCamere"
         className="relative hidden lg:block h-screen overflow-hidden"
       >
         {cards.map((card, i) => {
