@@ -1,10 +1,11 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
+import { usePathname } from "next/navigation";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -70,6 +71,17 @@ export const AnimationCardCamere = ({ blocks }) => {
 
   const sectionRef = useRef(null);
   const panelsRef = useRef([]);
+
+  const pathname = usePathname();
+
+  useEffect(() => {
+    // refresh quando cambia il percorso client-side
+    ScrollTrigger.refresh();
+    // opzionale: kill/cleanup se serve
+    return () => {
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+    };
+  }, [pathname]);
 
   useGSAP(
     () => {
@@ -145,6 +157,13 @@ export const AnimationCardCamere = ({ blocks }) => {
             invalidateOnRefresh: true,
           },
         });
+
+        // ScrollTrigger.refresh();
+
+        // const onRouteChange = () => {
+        //   ScrollTrigger.refresh();
+        // };
+        // Router.events.on("routeChangeComplete", onRouteChange);
 
         // Prima left entra come da richiesta
         tl.to(lefts[0], {
