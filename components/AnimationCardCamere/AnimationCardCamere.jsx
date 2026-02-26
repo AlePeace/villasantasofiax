@@ -75,12 +75,8 @@ export const AnimationCardCamere = ({ blocks }) => {
   const pathname = usePathname();
 
   useEffect(() => {
-    // refresh quando cambia il percorso client-side
+    // refresh quando cambia il percorso client-side (NON uccidere i trigger)
     ScrollTrigger.refresh();
-    // opzionale: kill/cleanup se serve
-    return () => {
-      ScrollTrigger.getAll().forEach((st) => st.kill());
-    };
   }, [pathname]);
 
   useGSAP(
