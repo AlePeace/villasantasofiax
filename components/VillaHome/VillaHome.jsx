@@ -125,8 +125,8 @@ export const VillaHome = ({ blocks }) => {
             />
           </div>
           <div>
-            <div className="lg:-mt-[50%] xl:-mt-[70%] lg:basis-1/2">
-              <div className="flex justify-end lg:justify-start items-end -mt-[10%]">
+            <div className="lg:-mt-[50%] lg:basis-1/2">
+              <div className="flex justify-end lg:justify-start items-end -mt-[5%]">
                 <Image
                   src={imgBed.url}
                   alt={imgBed.alt || "Image"}
