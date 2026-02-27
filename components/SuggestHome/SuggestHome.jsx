@@ -205,7 +205,7 @@ export const SuggestHome = ({ blocks }) => {
               {firstImage && (
                 <Image
                   src={firstImage.attributes?.url}
-                  alt={firstImage.attributes?.alternativeText}
+                  alt={firstImage.attributes?.alternativeText || "Image"}
                   width={firstImage.attributes?.width}
                   height={firstImage.attributes?.height}
                   className="object-cover h-full"
@@ -216,7 +216,7 @@ export const SuggestHome = ({ blocks }) => {
               {secondImage && (
                 <Image
                   src={secondImage.attributes?.url}
-                  alt={secondImage.attributes?.alternativeText}
+                  alt={secondImage.attributes?.alternativeText || "Image"}
                   width={secondImage.attributes?.width}
                   height={secondImage.attributes?.height}
                 />

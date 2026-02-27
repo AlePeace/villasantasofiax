@@ -20,7 +20,7 @@ export const VillaHome = ({ blocks }) => {
   const bottomHeading = headings[1];
 
   return (
-    <section className="relative z-20 w-full h-full bg-gradient-to-b pt-10 lg:pt-32 px-5 lg:px-40 from-white to-gradientbrown">
+    <section className="relative z-20 w-full h-full bg-linear-to-b pt-10 lg:pt-32 px-5 lg:px-40 from-white to-gradientbrown overflow-hidden">
       <div className="absolute right-0 lg:right-20 xl:right-40 z-0 top-1/4 h-[50%] w-1/2 lg:w-1/3 bg-peach"></div>
       <div className="absolute w-full top-0 left-0 px-10 pt-10 lg:pt-32 flex items-center justify-center">
         <svg

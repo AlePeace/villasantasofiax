@@ -26,7 +26,7 @@ export const CameraHome = ({ blocks }) => {
           <div className="relative z-10">
             <Image
               src={img?.attributes?.url}
-              alt={img?.attributes?.alt}
+              alt={img?.attributes?.alt || "Camera Home"}
               width={img?.attributes?.width}
               height={img?.attributes?.height}
               className={`object-cover w-[${img?.attributes?.width}px] h-[${img?.attributes?.height}px] aspect-[${img?.attributes?.width}/${img?.attributes?.height}] pointer-events-none will-change-transform relative z-10`}

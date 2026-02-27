@@ -1,11 +1,9 @@
-import "../styles/globals.css";
-import { config } from "@fortawesome/fontawesome-svg-core";
-import "@fortawesome/fontawesome-svg-core/styles.css";
 import localFont from "next/font/local";
 import { Nunito_Sans } from "next/font/google";
-import { useLenis } from "utils/useLenis";
-
-config.autoAddCss = false;
+import "../styles/globals.css";
+import { getMenu } from "utils/getMenu";
+import { MainMenu } from "components/MainMenu";
+import { SmoothScroll } from "components/SmoothScroll";
 
 const montecatini = localFont({
   src: [
@@ -25,13 +23,16 @@ const nunito = Nunito_Sans({
   variable: "--font-nunito",
 });
 
-function MyApp({ Component, pageProps }) {
-  useLenis();
+export default async function RootLayout({ children }) {
+  const menus = await getMenu();
   return (
-    <div className={`${montecatini.variable} ${nunito.variable}`}>
-      <Component {...pageProps} />
-    </div>
+    <html lang="it">
+      <body className={`${montecatini.variable} ${nunito.variable}`}>
+        <SmoothScroll>
+          <MainMenu menuData={menus} menus={menus} />
+          {children}
+        </SmoothScroll>
+      </body>
+    </html>
   );
 }
-
-export default MyApp;

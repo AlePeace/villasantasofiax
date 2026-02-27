@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef } from "react";
 import { Cover } from "components/Cover";
 import { Heading } from "components/Heading";

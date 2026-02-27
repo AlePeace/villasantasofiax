@@ -1,11 +1,12 @@
-import { useRef, useEffect } from "react";
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
-import { usePathname } from "next/navigation";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -50,13 +51,6 @@ export const AnimationCardHome = ({ blocks }) => {
 
   const sectionRef = useRef(null);
   const panelsRef = useRef([]);
-
-  const pathname = usePathname();
-
-  useEffect(() => {
-    // refresh quando cambia il percorso client-side (NON uccidere i trigger)
-    ScrollTrigger.refresh();
-  }, [pathname]);
 
   useGSAP(
     () => {
