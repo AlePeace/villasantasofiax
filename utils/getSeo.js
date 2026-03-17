@@ -1,45 +1,112 @@
-export const getSeo = async (uri) => {
+const processSeoUrls = (seo) => {
+  if (!seo) return seo;
+  const wpUrl = process.env.NEXT_PUBLIC_WP_URL || "";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "";
+  if (!wpUrl || !siteUrl) return seo;
+
+  return {
+    ...seo,
+    canonicalUrl: seo.canonicalUrl?.replace(wpUrl, siteUrl),
+    openGraph: seo.openGraph
+      ? {
+          ...seo.openGraph,
+          url: seo.openGraph.url?.replace(wpUrl, siteUrl),
+        }
+      : seo.openGraph,
+  };
+};
+
+export const getSeo = async (uri, locale = "it") => {
   const params = {
     query: `
-          query SeoQuery($uri: String!) {
-            nodeByUri(uri: $uri) {
-              ... on Page {
-                seo {
+      query SeoQuery($uri: String!) {
+        nodeByUri(uri: $uri) {
+          ... on Page {
+            seo {
+              title
+              description
+              robots
+              canonicalUrl
+              openGraph {
+                locale
+                siteName
+                type
+                title
+                description
+                url
+                twitterMeta {
+                  card
                   title
-        description
-        robots
-        canonicalUrl
-        openGraph {
-          locale
-          siteName
-          type
-          title
-          description
-          url
-          twitterMeta {
-            card
-            title
-            description
-          }
-        }
+                  description
                 }
               }
             }
+            language {
+              code
+            }
+            translations {
+              seo {
+                title
+                description
+                robots
+                canonicalUrl
+                openGraph {
+                  locale
+                  siteName
+                  type
+                  title
+                  description
+                  url
+                  twitterMeta {
+                    card
+                    title
+                    description
+                  }
+                }
+              }
+              language {
+                code
+              }
+            }
           }
-            
-        `,
+        }
+      }
+    `,
     variables: { uri },
   };
+
   const response = await fetch(process.env.WP_GRAPHQL_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(params),
+    next: { revalidate: 86400 },
   });
+
   const { data } = await response.json();
-  if (!data.nodeByUri) {
+
+  if (!data?.nodeByUri) {
     return null;
   }
-  return data.nodeByUri.seo;
+
+  const page = data.nodeByUri;
+  const pageLanguage = page.language?.code?.toLowerCase();
+
+  // Se la pagina è già nella lingua richiesta
+  if (pageLanguage === locale) {
+    return processSeoUrls(page.seo);
+  }
+
+  // Cerca tra le traduzioni
+  const translation = page.translations?.find(
+    (t) => t.language?.code?.toLowerCase() === locale,
+  );
+
+  if (translation) {
+    return processSeoUrls(translation.seo);
+  }
+
+  // Fallback
+  return processSeoUrls(page.seo);
 };

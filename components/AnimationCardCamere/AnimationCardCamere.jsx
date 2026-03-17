@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
+import { List } from "components/List";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -21,13 +22,13 @@ const fallbackPalette = [
 ];
 
 const fallbackPaletteRight = [
-  { bg: "#FFB87D21", text: "#6C6C6C" },
-  { bg: "#49907D1A", text: "#6C6C6C" },
-  { bg: "#FFB87D21", text: "#6C6C6C" },
-  { bg: "#1F51891A", text: "#6C6C6C" },
-  { bg: "#A0B8984D", text: "#6C6C6C" },
-  { bg: "#FFAB674D", text: "#6C6C6C" },
-  { bg: "#00ABD51A", text: "#6C6C6C" },
+  { bg: "#FFB87D", text: "#6C6C6C" },
+  { bg: "#49907D", text: "#6C6C6C" },
+  { bg: "#FFB87D", text: "#6C6C6C" },
+  { bg: "#1F5189", text: "#6C6C6C" },
+  { bg: "#A0B898", text: "#6C6C6C" },
+  { bg: "#FFAB67", text: "#6C6C6C" },
+  { bg: "#00ABD5", text: "#6C6C6C" },
 ];
 
 const parseCardFromGroup = (group, index) => {
@@ -38,6 +39,7 @@ const parseCardFromGroup = (group, index) => {
   const imgoriz = images[1] || null;
   const headings = innerBlocks.filter((b) => b.name === "core/heading");
   const paragraph = innerBlocks.find((b) => b.name === "core/paragraph");
+  const list = innerBlocks.find((b) => b.name === "core/list");
 
   const leftColors = fallbackPalette[index % fallbackPalette.length];
   const rightColors = fallbackPaletteRight[index % fallbackPaletteRight.length];
@@ -58,6 +60,7 @@ const parseCardFromGroup = (group, index) => {
     subtitle: headings[1],
     paragraph,
     link: headings[2],
+    list,
     bg: leftBg,
     text: leftText,
     rightBg,
@@ -155,6 +158,8 @@ export const AnimationCardCamere = ({ blocks }) => {
           rotation: 0,
           ease: "none",
           duration: 1,
+          onComplete: () =>
+            gsap.set(lefts[0], { willChange: "auto", force3D: false }),
         });
 
         // Ogni nuova card sale sopra e si anima (senza nascondere con opacity)
@@ -212,7 +217,7 @@ export const AnimationCardCamere = ({ blocks }) => {
               ref={(el) => {
                 panelsRef.current[i] = el;
               }}
-              className="card-panel"
+              className="card-panel overflow-hidden"
             >
               <div className="h-full flex">
                 <div
@@ -264,28 +269,39 @@ export const AnimationCardCamere = ({ blocks }) => {
                       backgroundColor: card.rightBg,
                       color: card.rightText,
                     }}
-                    className="h-full w-full"
+                    className="h-full w-full !opacity-100"
                   >
-                    {img && img.url && (
-                      <Image
-                        src={img.url}
-                        alt={img.alt || "Card image"}
-                        width={img.width || 1600}
-                        height={img.height || 900}
-                        className="w-1/2 h-1/2 object-cover"
-                        priority={i === 0}
-                      />
-                    )}
-                    {img && img.url && (
-                      <Image
-                        src={img.url}
-                        alt={img.alt || "Card image"}
-                        width={img.width || 1600}
-                        height={img.height || 900}
-                        className="w-1/2 h-1/2 object-cover"
-                        priority={i === 0}
-                      />
-                    )}
+                    <div>
+                      {card.list && (
+                        <List
+                          className="space-y-5"
+                          contentClassName="font-montecatini"
+                          blocks={card.list.innerBlocks}
+                        />
+                      )}
+                    </div>
+                    <div>
+                      {img && img.url && (
+                        <Image
+                          src={img.url}
+                          alt={img.alt || "Card image"}
+                          width={img.width || 1600}
+                          height={img.height || 900}
+                          className="w-1/2 h-1/2 object-cover"
+                          priority={i === 0}
+                        />
+                      )}
+                      {imgoriz && imgoriz.url && (
+                        <Image
+                          src={imgoriz.url}
+                          alt={imgoriz.alt || "Card image"}
+                          width={imgoriz.width || 1600}
+                          height={imgoriz.height || 900}
+                          className="w-1/2 h-1/2 object-cover"
+                          priority={i === 0}
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -297,7 +313,7 @@ export const AnimationCardCamere = ({ blocks }) => {
       {/* Mobile fallback (stack) */}
       <section className="lg:hidden py-8">
         {cards.map((card) => {
-          const img = imgAttr(card.image);
+          const img = imgAttr(card.imgoriz);
           return (
             <div key={`m-${card.id}`} className="flex flex-col overflow-hidden">
               <div
@@ -324,6 +340,13 @@ export const AnimationCardCamere = ({ blocks }) => {
                     className="font-nunito font-light text-base"
                   />
                 )}
+                {card.link && (
+                  <Heading
+                    level={card.link.attributes?.level}
+                    content={card.link.attributes?.content}
+                    className="font-montecatini uppercase text-lg xl:text-xl"
+                  />
+                )}
               </div>
 
               {img && img.url && (
@@ -332,7 +355,7 @@ export const AnimationCardCamere = ({ blocks }) => {
                   alt={img.alt || "Card image"}
                   width={img.width || 1600}
                   height={img.height || 900}
-                  className="w-full h-auto object-cover"
+                  className="w-full h-full object-cover"
                 />
               )}
             </div>
