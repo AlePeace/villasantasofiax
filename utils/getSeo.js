@@ -81,7 +81,8 @@ export const getSeo = async (uri, locale = "it") => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(params),
-    next: { revalidate: 86400 },
+    cache: "no-store",
+    //next: { revalidate: 86400 },
   });
 
   const { data } = await response.json();

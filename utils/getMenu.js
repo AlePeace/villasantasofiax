@@ -25,7 +25,8 @@ export const getMenu = async (locale = "it") => {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ query, variables: { language: locale } }),
-    next: { revalidate: 86400 },
+    cache: "no-store",
+    //next: { revalidate: 86400 },
   });
 
   const json = await res.json();

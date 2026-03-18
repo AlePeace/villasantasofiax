@@ -1,20 +1,17 @@
+import { Buttons } from "components/Buttons";
 import { Heading } from "components/Heading";
-import { Paragraph } from "components/Paragraph";
-import Image from "next/image";
 
-export const SuggestHome = ({ blocks }) => {
+export const BookCamera = ({ blocks }) => {
   const innerBlocks = blocks?.innerBlocks || [];
-  const heading = innerBlocks.find((block) => block.name === "core/heading");
-  const paragraph = innerBlocks.find(
-    (block) => block.name === "core/paragraph",
-  );
-  const images = innerBlocks.filter((block) => block.name === "core/image");
-  const firstImage = images[0];
-  const secondImage = images[1];
+  const headings = innerBlocks.filter((block) => block.name === "core/heading");
+  const buttons = innerBlocks.find((block) => block.name === "core/buttons");
+
+  const subtitle = headings[0];
+  const title = headings[1];
 
   return (
-    <section className="w-full relative pt-20 lg:pt-40 pb-10 lg:pb-20 px-5 lg:px-0 overflow-hidden">
-      <div className="absolute left-0 top-0 lg:top-14 right-0">
+    <section className="w-full">
+      <div className="w-full">
         <svg
           width="1324"
           height="174"
@@ -181,49 +178,32 @@ export const SuggestHome = ({ blocks }) => {
           />
         </svg>
       </div>
-      <div className="relative lg:pl-40">
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:gap-10">
-          <div className="space-y-5 lg:space-y-10 lg:basis-1/2">
-            {heading && (
-              <Heading
-                level={heading.attributes?.level}
-                content={heading.attributes?.content}
-                className="font-montecatini font-normal text-5xl lg:text-6xl xl:text-7xl text-peach mt-10"
-              />
-            )}
-            {paragraph && (
-              <div className="pl-7 lg:pr-32 border-l border-gray/30">
-                <Paragraph
-                  content={paragraph?.attributes?.content}
-                  className="font-nunito font-light text-gray text-base lg:text-lg xl:text-xl"
-                />
-              </div>
-            )}
+      <div className="px-5 lg:px-32 mx-auto max-w-7xl flex flex-col items-center justify-center gap-10 py-10 lg:py-20">
+        {subtitle && (
+          <div>
+            <Heading
+              level={subtitle.attributes?.level}
+              content={subtitle.attributes?.content}
+              className="font-nunito tracking-[2.16px] font-normal uppercase text-xs text-darkgray text-center"
+            />
           </div>
-          <div className="flex gap-3 lg:gap-5 items-stretch lg:basis-1/2">
-            <div>
-              {firstImage && (
-                <Image
-                  src={firstImage.attributes?.url}
-                  alt={firstImage.attributes?.alternativeText || "Image"}
-                  width={firstImage.attributes?.width}
-                  height={firstImage.attributes?.height}
-                  className="object-cover h-full"
-                />
-              )}
-            </div>
-            <div>
-              {secondImage && (
-                <Image
-                  src={secondImage.attributes?.url}
-                  alt={secondImage.attributes?.alternativeText || "Image"}
-                  width={secondImage.attributes?.width}
-                  height={secondImage.attributes?.height}
-                />
-              )}
-            </div>
+        )}
+        {title && (
+          <div>
+            <Heading
+              level={title.attributes?.level}
+              content={title.attributes?.content}
+              className="font-montecatini font-normal text-3xl lg:text-5xl text-blue text-center"
+            />
           </div>
-        </div>
+        )}
+        {buttons && (
+          <Buttons
+            blocks={buttons.innerBlocks}
+            className="justify-center"
+            variant="BookExp"
+          />
+        )}
       </div>
     </section>
   );

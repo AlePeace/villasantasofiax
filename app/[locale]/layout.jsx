@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import { Nunito_Sans } from "next/font/google";
 import "../../styles/globals.css";
 import { getMenu } from "utils/getMenu";
+import { getMenuBgImage } from "utils/getMenuBgImage";
 import { MainMenu } from "components/MainMenu";
 import { SmoothScroll } from "components/SmoothScroll";
 import { NextIntlClientProvider } from "next-intl";
@@ -42,14 +43,17 @@ export default async function LocaleLayout({ children, params }) {
   setRequestLocale(locale);
 
   const messages = await getMessages();
-  const menus = await getMenu(locale);
+  const [menus, bgImage] = await Promise.all([
+    getMenu(locale),
+    getMenuBgImage(),
+  ]);
 
   return (
     <html lang={locale}>
       <body className={`${nunito.variable} ${montecatini.variable}`}>
         <NextIntlClientProvider messages={messages}>
           <SmoothScroll>
-            <MainMenu menuData={menus} menus={menus} />
+            <MainMenu menuData={menus} menus={menus} bgImage={bgImage} />
             {children}
             <CookieConsentBanner />
           </SmoothScroll>

@@ -1,7 +1,11 @@
-export const getHeaderLogo = async () => {
+const MENU_BG_IMAGE_ID = 31; // ← metti qui il tuo ID
+
+export const getMenuBgImage = async () => {
+  if (!MENU_BG_IMAGE_ID) return null;
+
   const query = `
-    query HeaderLogo {
-      mediaItem(id: 55, idType: DATABASE_ID) {
+    query MenuBgImage {
+      mediaItem(id: ${MENU_BG_IMAGE_ID}, idType: DATABASE_ID) {
         sourceUrl
         altText
         mediaDetails {
@@ -17,7 +21,6 @@ export const getHeaderLogo = async () => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ query }),
     cache: "no-store",
-    //next: { revalidate: 86400 },
   });
 
   const json = await res.json();

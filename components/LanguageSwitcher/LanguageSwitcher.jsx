@@ -18,14 +18,14 @@ export const LanguageSwitcher = () => {
       {routing.locales.map((loc, index) => (
         <div key={loc} className="flex items-center">
           {index > 0 && (
-            <span className="text-text/50 -mt-1 select-none">|</span>
+            <span className="text-white/50 -mt-1 select-none">|</span>
           )}
           <button
             onClick={() => handleChange(loc)}
-            className={`font-montecatini font-light text-xl uppercase px-1 py-1 rounded transition-colors cursor-pointer ${
+            className={`font-montecatini font-light text-xl text-white uppercase px-1 py-1 rounded transition-colors cursor-pointer ${
               locale === loc
-                ? "!font-bold text-text"
-                : "text-text hover:bg-text/10"
+                ? "!font-bold text-white"
+                : "text-white hover:bg-white/10"
             }`}
           >
             {loc}

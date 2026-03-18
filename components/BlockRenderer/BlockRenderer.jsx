@@ -1,5 +1,6 @@
 import { AnimationCardCamere } from "components/AnimationCardCamere";
 import { AnimationCardHome } from "components/AnimationCardHome";
+import { BookCamera } from "components/BookCamera";
 import { BookExpHome } from "components/BookExpHome/BookExpHome";
 import { CameraHome } from "components/CameraHome/CameraHome";
 import { CilentoHome } from "components/CilentoHome";
@@ -47,6 +48,9 @@ export const BlockRenderer = ({ blocks }) => {
 
           case "AnimationCardCamere":
             return <AnimationCardCamere key={block.id} blocks={block} />;
+
+          case "BookCamera":
+            return <BookCamera key={block.id} blocks={block} />;
 
           default:
             return null;

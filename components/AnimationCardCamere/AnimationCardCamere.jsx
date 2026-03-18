@@ -22,13 +22,13 @@ const fallbackPalette = [
 ];
 
 const fallbackPaletteRight = [
-  { bg: "#FFB87D", text: "#6C6C6C" },
-  { bg: "#49907D", text: "#6C6C6C" },
-  { bg: "#FFB87D", text: "#6C6C6C" },
-  { bg: "#1F5189", text: "#6C6C6C" },
-  { bg: "#A0B898", text: "#6C6C6C" },
-  { bg: "#FFAB67", text: "#6C6C6C" },
-  { bg: "#00ABD5", text: "#6C6C6C" },
+  { bg: "#FFF3E9", text: "#6C6C6C" },
+  { bg: "#ECF4F2", text: "#6C6C6C" },
+  { bg: "#FFF6EE", text: "#6C6C6C" },
+  { bg: "#E8EDF3", text: "#6C6C6C" },
+  { bg: "#E2E9DF", text: "#6C6C6C" },
+  { bg: "#FFE6D1", text: "#6C6C6C" },
+  { bg: "#E5F6FB", text: "#6C6C6C" },
 ];
 
 const parseCardFromGroup = (group, index) => {
@@ -269,25 +269,25 @@ export const AnimationCardCamere = ({ blocks }) => {
                       backgroundColor: card.rightBg,
                       color: card.rightText,
                     }}
-                    className="h-full w-full !opacity-100"
+                    className="h-full w-full pl-24 pr-18 py-10 flex flex-col justify-between"
                   >
                     <div>
                       {card.list && (
                         <List
-                          className="space-y-5"
+                          className="space-y-5 pt-16 pl-10"
                           contentClassName="font-montecatini"
                           blocks={card.list.innerBlocks}
                         />
                       )}
                     </div>
-                    <div>
+                    <div className="relative">
                       {img && img.url && (
                         <Image
                           src={img.url}
                           alt={img.alt || "Card image"}
                           width={img.width || 1600}
                           height={img.height || 900}
-                          className="w-1/2 h-1/2 object-cover"
+                          className="absolute -top-[85%] right-0 translate-x-10 w-1/3 h-full !aspect-9/16 object-cover"
                           priority={i === 0}
                         />
                       )}
@@ -297,7 +297,7 @@ export const AnimationCardCamere = ({ blocks }) => {
                           alt={imgoriz.alt || "Card image"}
                           width={imgoriz.width || 1600}
                           height={imgoriz.height || 900}
-                          className="w-1/2 h-1/2 object-cover"
+                          className="w-full h-full object-cover"
                           priority={i === 0}
                         />
                       )}
@@ -317,7 +317,7 @@ export const AnimationCardCamere = ({ blocks }) => {
           return (
             <div key={`m-${card.id}`} className="flex flex-col overflow-hidden">
               <div
-                className="px-8 py-12 space-y-4 text-center"
+                className="px-8 pt-12 pb-5 space-y-4 text-center"
                 style={{ backgroundColor: card.bg, color: card.text }}
               >
                 {card.title && (
@@ -345,6 +345,13 @@ export const AnimationCardCamere = ({ blocks }) => {
                     level={card.link.attributes?.level}
                     content={card.link.attributes?.content}
                     className="font-montecatini uppercase text-lg xl:text-xl"
+                  />
+                )}
+                {card.list && (
+                  <List
+                    className="flex items-center justify-between pt-5"
+                    contentClassName="font-montecatini"
+                    blocks={card.list.innerBlocks}
                   />
                 )}
               </div>
