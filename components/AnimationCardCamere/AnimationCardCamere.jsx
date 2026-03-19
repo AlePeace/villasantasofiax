@@ -2,12 +2,14 @@
 
 import { useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
 import { List } from "components/List";
+import { relativeToAbsoluteUrls } from "utils/relativeToAbsoluteUrls";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -52,6 +54,11 @@ const parseCardFromGroup = (group, index) => {
   const rightText =
     group?.attributes?.rightStyle?.color?.text || rightColors.text;
 
+  const linkBlock = headings[2];
+  const rawLinkHref =
+    linkBlock?.attributes?.content?.match(/href="([^"]+)"/)?.[1] || null;
+  const linkHref = rawLinkHref ? relativeToAbsoluteUrls(rawLinkHref) : null;
+
   return {
     id: group?.clientId || `card-${index}`,
     imgvert,
@@ -59,7 +66,8 @@ const parseCardFromGroup = (group, index) => {
     title: headings[0],
     subtitle: headings[1],
     paragraph,
-    link: headings[2],
+    link: linkBlock,
+    linkHref,
     list,
     bg: leftBg,
     text: leftText,
@@ -145,7 +153,7 @@ export const AnimationCardCamere = ({ blocks }) => {
             start: "top top",
             end: `+=${panels.length * 180}%`,
             pin: true,
-            scrub: true,
+            scrub: 1,
             snap: false,
             invalidateOnRefresh: true,
           },
@@ -217,13 +225,17 @@ export const AnimationCardCamere = ({ blocks }) => {
               ref={(el) => {
                 panelsRef.current[i] = el;
               }}
-              className="card-panel overflow-hidden"
+              className="card-panel overflow-hidden pointer-events-none"
             >
               <div className="h-full flex">
-                <div
+                <Link
+                  href={card.linkHref || "#"}
                   data-card-left
-                  className="basis-1/2 h-full flex items-center justify-center"
+                  className="basis-1/2 h-full flex items-center justify-center pointer-events-auto cursor-pointer"
                   style={{ backgroundColor: card.bg, color: card.text }}
+                  tabIndex={card.linkHref ? 0 : -1}
+                  aria-disabled={!card.linkHref}
+                  onClick={!card.linkHref ? (e) => e.preventDefault() : undefined}
                 >
                   <div className="px-12 xl:px-20 py-12 space-y-6 text-center">
                     {card.title && (
@@ -257,7 +269,7 @@ export const AnimationCardCamere = ({ blocks }) => {
                       />
                     )}
                   </div>
-                </div>
+                </Link>
 
                 <div
                   data-card-right
@@ -316,9 +328,13 @@ export const AnimationCardCamere = ({ blocks }) => {
           const img = imgAttr(card.imgoriz);
           return (
             <div key={`m-${card.id}`} className="flex flex-col overflow-hidden">
-              <div
-                className="px-8 pt-12 pb-5 space-y-4 text-center"
+              <Link
+                href={card.linkHref || "#"}
+                className="px-8 pt-12 pb-5 space-y-4 text-center block"
                 style={{ backgroundColor: card.bg, color: card.text }}
+                tabIndex={card.linkHref ? 0 : -1}
+                aria-disabled={!card.linkHref}
+                onClick={!card.linkHref ? (e) => e.preventDefault() : undefined}
               >
                 {card.title && (
                   <Heading
@@ -354,7 +370,7 @@ export const AnimationCardCamere = ({ blocks }) => {
                     blocks={card.list.innerBlocks}
                   />
                 )}
-              </div>
+              </Link>
 
               {img && img.url && (
                 <Image

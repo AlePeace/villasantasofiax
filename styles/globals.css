@@ -15,8 +15,9 @@
   --color-gray: #434343;
   --color-peach: #fcd2b0;
   --color-card: #ff9e4e;
-  --color-darkgray: #8B8B8B;
-  --color-overlay: #FCCEAA;
+  --color-darkgray: #8b8b8b;
+  --color-overlay: #fcf5ee;
+  --color-text: #6c6c6c;
 
   --font-montecatini: var(--font-montecatini), serif;
   --font-nunito: var(--font-nunito), sans-serif;

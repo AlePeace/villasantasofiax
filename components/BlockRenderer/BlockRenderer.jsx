@@ -5,9 +5,13 @@ import { BookExpHome } from "components/BookExpHome/BookExpHome";
 import { CameraHome } from "components/CameraHome/CameraHome";
 import { CilentoHome } from "components/CilentoHome";
 import { DescriptionCamere } from "components/DescriptionCamere/DescriptionCamere";
+import { Footer } from "components/Footer";
 import { HeroCamere } from "components/HeroCamere/HeroCamere";
 import { HeroHome } from "components/HeroHome/HeroHome";
+import { InfoCamera } from "components/InfoCamera";
+import { ServicesCamera } from "components/ServicesCamera/ServicesCamera";
 import { SuggestHome } from "components/SuggestHome";
+import { SummaryCamere } from "components/SummaryCamere/SummaryCamere";
 import { VillaHome } from "components/VillaHome";
 
 export const BlockRenderer = ({ blocks }) => {
@@ -51,6 +55,18 @@ export const BlockRenderer = ({ blocks }) => {
 
           case "BookCamera":
             return <BookCamera key={block.id} blocks={block} />;
+
+          case "SummaryCamere":
+            return <SummaryCamere key={block.id} blocks={block} />;
+
+          case "InfoCamera":
+            return <InfoCamera key={block.id} blocks={block} />;
+
+          case "ServicesCamera":
+            return <ServicesCamera key={block.id} blocks={block} />;
+
+          case "Footer":
+            return <Footer key={block.id} blocks={block} />;
 
           default:
             return null;

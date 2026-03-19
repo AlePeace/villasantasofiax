@@ -2,11 +2,13 @@
 
 import { useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
+import { relativeToAbsoluteUrls } from "utils/relativeToAbsoluteUrls";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -22,6 +24,10 @@ const parseCardFromGroup = (group, index) => {
   const image = innerBlocks.find((b) => b.name === "core/image");
   const headings = innerBlocks.filter((b) => b.name === "core/heading");
   const paragraph = innerBlocks.find((b) => b.name === "core/paragraph");
+  const linkBlock = headings[2];
+  const rawLinkHref =
+    linkBlock?.attributes?.content?.match(/href="([^"]+)"/)?.[1] || null;
+  const linkHref = rawLinkHref ? relativeToAbsoluteUrls(rawLinkHref) : null;
 
   const colors = fallbackPalette[index % fallbackPalette.length];
   const bg = group?.attributes?.style?.color?.background || colors.bg;
@@ -33,7 +39,8 @@ const parseCardFromGroup = (group, index) => {
     title: headings[0],
     subtitle: headings[1],
     paragraph,
-    link: headings[2],
+    link: linkBlock,
+    linkHref,
     bg,
     text,
   };
@@ -120,7 +127,7 @@ export const AnimationCardHome = ({ blocks }) => {
             start: "top top",
             end: `+=${panels.length * 180}%`,
             pin: true,
-            scrub: true,
+            scrub: 1,
             snap: false,
             invalidateOnRefresh: true,
           },
@@ -207,13 +214,19 @@ export const AnimationCardHome = ({ blocks }) => {
               ref={(el) => {
                 panelsRef.current[i] = el;
               }}
-              className="card-panel"
+              className="card-panel pointer-events-none"
             >
               <div className="h-full flex">
-                <div
+                <Link
+                  href={card.linkHref || "#"}
                   data-card-left
-                  className="basis-1/2 h-full flex items-center justify-center"
+                  className="basis-1/2 h-full flex items-center justify-center pointer-events-auto cursor-pointer"
                   style={{ backgroundColor: card.bg, color: card.text }}
+                  tabIndex={card.linkHref ? 0 : -1}
+                  aria-disabled={!card.linkHref}
+                  onClick={
+                    !card.linkHref ? (e) => e.preventDefault() : undefined
+                  }
                 >
                   <div className="px-12 xl:px-20 py-12 space-y-6 text-center">
                     {card.title && (
@@ -247,7 +260,7 @@ export const AnimationCardHome = ({ blocks }) => {
                       />
                     )}
                   </div>
-                </div>
+                </Link>
 
                 <div
                   data-card-right
@@ -278,9 +291,13 @@ export const AnimationCardHome = ({ blocks }) => {
           const img = imgAttr(card.image);
           return (
             <div key={`m-${card.id}`} className="flex flex-col overflow-hidden">
-              <div
-                className="px-8 py-12 space-y-4 text-center"
+              <Link
+                href={card.linkHref || "#"}
+                className="px-8 pt-12 pb-5 space-y-4 text-center block"
                 style={{ backgroundColor: card.bg, color: card.text }}
+                tabIndex={card.linkHref ? 0 : -1}
+                aria-disabled={!card.linkHref}
+                onClick={!card.linkHref ? (e) => e.preventDefault() : undefined}
               >
                 {card.title && (
                   <Heading
@@ -302,7 +319,7 @@ export const AnimationCardHome = ({ blocks }) => {
                     className="font-montecatini font-normal text-3xl"
                   />
                 )}
-              </div>
+              </Link>
 
               {card.image && (
                 <Image

@@ -190,13 +190,13 @@ export default function CookieConsentBanner() {
                     body: [
                       {
                         name: "_ga",
-                        domain: "iltridentepositano.com",
+                        domain: "villasantasofia.it",
                         desc: "Google Analytics - distingue gli utenti",
                         duration: "2 anni",
                       },
                       {
                         name: "_gid",
-                        domain: "iltridentepositano.com",
+                        domain: "villasantasofia.it",
                         desc: "Google Analytics - distingue gli utenti",
                         duration: "24 ore",
                       },
@@ -219,7 +219,7 @@ export default function CookieConsentBanner() {
                     body: [
                       {
                         name: "_fbp",
-                        domain: "iltridentepositano.com",
+                        domain: "villasantasofia.it",
                         desc: "Meta Pixel - tracciamento conversioni",
                         duration: "3 mesi",
                       },
@@ -282,7 +282,7 @@ export default function CookieConsentBanner() {
                     body: [
                       {
                         name: "cc_cookie",
-                        domain: "iltridentepositano.com",
+                        domain: "villasantasofia.it",
                         desc: "Saves cookie preferences",
                         duration: "1 year",
                       },
@@ -311,13 +311,13 @@ export default function CookieConsentBanner() {
                     body: [
                       {
                         name: "_ga",
-                        domain: "iltridentepositano.com",
+                        domain: "villasantasofia.it",
                         desc: "Google Analytics - distinguishes users",
                         duration: "2 years",
                       },
                       {
                         name: "_gid",
-                        domain: "iltridentepositano.com",
+                        domain: "villasantasofia.it",
                         desc: "Google Analytics - distinguishes users",
                         duration: "24 hours",
                       },
@@ -340,7 +340,7 @@ export default function CookieConsentBanner() {
                     body: [
                       {
                         name: "_fbp",
-                        domain: "iltridentepositano.com",
+                        domain: "villasantasofia.it",
                         desc: "Meta Pixel - conversion tracking",
                         duration: "3 months",
                       },
