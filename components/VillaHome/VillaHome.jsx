@@ -92,7 +92,10 @@ export const VillaHome = ({ blocks }) => {
               <div className="absolute bottom-14 lg:bottom-20 xl:bottom-44 -translate-y-1/2 lg:translate-x-1/4 right-0">
                 {buttons?.innerBlocks?.length > 0 && (
                   <div className="relative">
-                    <Buttons blocks={buttons.innerBlocks} variant="villaHome" />
+                    <Buttons
+                      blocks={buttons.innerBlocks}
+                      variant="villaHome"
+                    />
                   </div>
                 )}
               </div>

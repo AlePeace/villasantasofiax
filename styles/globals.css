@@ -40,3 +40,6 @@
 ::-webkit-scrollbar-thumb {
   @apply lg:bg-lightblue lg:rounded-full lg:transition-all lg:duration-300 lg:ease-in-out;
 }
+body{
+  @apply bg-white;
+}

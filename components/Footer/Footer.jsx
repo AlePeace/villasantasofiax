@@ -55,7 +55,7 @@ export const Footer = ({ blocks }) => {
                   viewBox="0 0 1417.3 850.4"
                   width="156.5px"
                   height="101.86px"
-                  className="w-full h-full"
+                  className="w-1/2 mx-auto lg:w-full h-full"
                 >
                   <g>
                     <path

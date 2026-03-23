@@ -371,7 +371,7 @@ export default function CookieConsentBanner() {
     <button
       onClick={() => CookieConsent.show(true)}
       aria-label={t("manageConsent")}
-      className="fixed bottom-0 translate-y-2/3 right-4 z-50 bg-cardspranzo rounded-t-lg py-3 px-5 shadow-xl hover:shadow-2xl/40 transition-all duration-500 ease-in-out hover:translate-y-0"
+      className="fixed bottom-0 translate-y-2/3 right-4 z-50 bg-gradientbrown rounded-t-lg py-3 px-5 shadow-xl hover:shadow-2xl/40 transition-all duration-500 ease-in-out hover:translate-y-0"
     >
       {t("manageConsent")}
     </button>

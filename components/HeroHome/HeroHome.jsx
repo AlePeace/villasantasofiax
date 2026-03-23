@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { Cover } from "components/Cover";
+import Image from "next/image";
 import { Heading } from "components/Heading";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -13,14 +13,13 @@ export const HeroHome = ({ blocks }) => {
   const container = useRef(null);
   const initialD = useRef("");
 
-  const coverBlock = blocks?.innerBlocks?.[0];
-  const headingBlock = coverBlock?.innerBlocks?.[0];
-  const background = {
-    backgroundVideo: coverBlock?.attributes?.url
-      ? { url: coverBlock.attributes.url }
-      : null,
-    backgroundColor: coverBlock?.attributes?.customOverlayColor || null,
-  };
+  const innerblocks = blocks?.innerBlocks || [];
+  const headingBlock = innerblocks.find((b) => b.name === "core/heading");
+  const video = innerblocks.find((b) => b.name === "core/video");
+  console.log("[HeroHome] video block:", JSON.stringify(video, null, 2));
+  const videoSrc = video?.attributes?.src;
+  const posterSrc = video?.attributes?.poster;
+
   useGSAP(
     () => {
       const from = container.current?.querySelector("#morphFrom");
@@ -41,7 +40,32 @@ export const HeroHome = ({ blocks }) => {
     { scope: container },
   );
   return (
-    <section ref={container} className="w-full h-screen relative">
+    <section ref={container} className="w-full h-screen relative overflow-hidden">
+      {/* Background: poster + video */}
+      <div className="absolute inset-0">
+        {posterSrc && (
+          <Image
+            src={posterSrc}
+            alt=""
+            priority
+            className="object-cover w-full h-screen"
+          />
+        )}
+        {videoSrc && (
+          <video
+            className="w-full h-screen object-cover"
+            src={videoSrc}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster={posterSrc}
+          />
+        )}
+      </div>
+
+      {/* Gradient overlay */}
       <div
         className="pointer-events-none absolute inset-0 z-10"
         style={{
@@ -49,9 +73,10 @@ export const HeroHome = ({ blocks }) => {
             "linear-gradient(179.96deg, rgba(0, 0, 0, 0) 0.04%, rgba(0, 0, 0, 0.26) 70.31%)",
           mixBlendMode: "darken",
         }}
-      ></div>
-      <Cover background={background}>
-        <div className="flex flex-col gap-5 lg:gap-10">
+      />
+
+      <div>
+        <div className="absolute inset-0 z-20 flex flex-col gap-5 lg:gap-10 justify-center items-center">
           <div className="mx-auto">
             <svg
               id="a"
@@ -141,7 +166,7 @@ export const HeroHome = ({ blocks }) => {
             ></Heading>
           )}
         </div>
-      </Cover>
+      </div>
       <div className="absolute w-full left-0 bottom-0 z-20">
         <svg
           id="Livello_1"

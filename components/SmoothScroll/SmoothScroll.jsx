@@ -13,6 +13,10 @@ export const SmoothScroll = ({ children }) => {
   const pathname = usePathname();
 
   useEffect(() => {
+    if (window.matchMedia("(min-width: 1024px)").matches) {
+      ScrollTrigger.normalizeScroll(true);
+    }
+
     function update(time) {
       lenisRef.current?.lenis?.raf(time * 1000);
     }

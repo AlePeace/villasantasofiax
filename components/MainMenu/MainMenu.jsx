@@ -104,7 +104,7 @@ export const MainMenu = ({
   return (
     <>
       {/* ── Header bar ── */}
-      <header className="fixed top-0 left-0 w-full z-[9999] px-6 lg:px-14 py-5 lg:py-7">
+      <header className={`fixed top-0 left-0 w-full z-[9999] px-6 lg:px-14 py-5 lg:py-7 ${!isOpen ? "mix-blend-difference" : ""} `}>
         <div className="grid grid-cols-2 items-center">
           {/* Left: Hamburger + Language Switcher */}
           <div className="flex items-center gap-5">
@@ -154,7 +154,7 @@ export const MainMenu = ({
           !isOpen ? "pointer-events-none" : ""
         }`}
       >
-        <div ref={logoRef} className="hidden lg:block absolute left-10 top-24 z-20">
+        <div ref={logoRef} className="hidden lg:block absolute left-10 top-24 z-20 isolate">
            <svg
               id="a"
               xmlns="http://www.w3.org/2000/svg"

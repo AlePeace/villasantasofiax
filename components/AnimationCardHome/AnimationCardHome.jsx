@@ -237,18 +237,18 @@ export const AnimationCardHome = ({ blocks }) => {
                       />
                     )}
 
+                    {card.paragraph && (
+                      <Paragraph
+                        content={card.paragraph.attributes?.content}
+                        className="font-nunito font-light text-base xl:text-lg"
+                      />
+                    )}
+
                     {card.subtitle && (
                       <Heading
                         level={card.subtitle.attributes?.level}
                         content={card.subtitle.attributes?.content}
                         className="font-montecatini font-normal uppercase text-base xl:text-lg"
-                      />
-                    )}
-
-                    {card.paragraph && (
-                      <Paragraph
-                        content={card.paragraph.attributes?.content}
-                        className="font-nunito font-light text-base xl:text-lg"
                       />
                     )}
 
