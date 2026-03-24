@@ -1,24 +1,19 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
 import { Heading } from "components/Heading";
+import { VideoBlock } from "components/VideoBlock";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
 
 gsap.registerPlugin(useGSAP, MorphSVGPlugin);
 
-export const HeroHome = ({ blocks }) => {
+export const HeroHome = ({ blocks, videoSrc, videoPoster }) => {
   const container = useRef(null);
   const initialD = useRef("");
 
-  const innerblocks = blocks?.innerBlocks || [];
-  const headingBlock = innerblocks.find((b) => b.name === "core/heading");
-  const video = innerblocks.find((b) => b.name === "core/video");
-  console.log("[HeroHome] video block:", JSON.stringify(video, null, 2));
-  const videoSrc = video?.attributes?.src;
-  const posterSrc = video?.attributes?.poster;
+  const headingBlock = blocks?.innerBlocks?.find((b) => b.name === "core/heading");
 
   useGSAP(
     () => {
@@ -40,30 +35,15 @@ export const HeroHome = ({ blocks }) => {
     { scope: container },
   );
   return (
-    <section ref={container} className="w-full h-screen relative overflow-hidden">
-      {/* Background: poster + video */}
-      <div className="absolute inset-0">
-        {posterSrc && (
-          <Image
-            src={posterSrc}
-            alt=""
-            priority
-            className="object-cover w-full h-screen"
-          />
-        )}
-        {videoSrc && (
-          <video
-            className="w-full h-screen object-cover"
-            src={videoSrc}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            poster={posterSrc}
-          />
-        )}
-      </div>
+    <section
+      ref={container}
+      className="w-full h-screen relative overflow-hidden"
+    >
+      <VideoBlock
+        src={videoSrc}
+        poster={videoPoster}
+        className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+      />
 
       {/* Gradient overlay */}
       <div
@@ -163,7 +143,7 @@ export const HeroHome = ({ blocks }) => {
               level={headingBlock.attributes?.level}
               content={headingBlock.attributes?.content}
               className="font-montecatini px-10 text-center text-white font-normal text-5xl lg:text-7xl"
-            ></Heading>
+            />
           )}
         </div>
       </div>

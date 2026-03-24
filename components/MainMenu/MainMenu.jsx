@@ -11,7 +11,7 @@ export const MainMenu = ({
   menuData,
   menus,
   bgImage = null,
-  prenotaUrl = "#prenota",
+  prenotaUrl = "https://booking.inreception.com/villasantasofia",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const overlayRef = useRef(null);

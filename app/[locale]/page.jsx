@@ -1,5 +1,6 @@
 import { BlockRenderer } from "components/BlockRenderer";
 import { getPage } from "utils/getPage";
+import { getHeroVideo } from "utils/getHeroVideo";
 import { notFound } from "next/navigation";
 import { getSeo } from "utils/getSeo";
 import { setRequestLocale } from "next-intl/server";
@@ -10,7 +11,10 @@ export default async function Home({ params }) {
 
   // Homepage: italiano "/", inglese "/en/" o prova anche "/"
   const uri = locale === "it" ? "/" : `/${locale}/`;
-  let data = await getPage(uri, locale);
+  let [data, heroVideo] = await Promise.all([
+    getPage(uri, locale),
+    getHeroVideo(),
+  ]);
 
   // Fallback: cerca la homepage italiana e usa le translations
   if (!data && locale !== "it") {
@@ -26,7 +30,7 @@ export default async function Home({ params }) {
   if (!data) {
     notFound();
   }
-  return <BlockRenderer blocks={data} />;
+  return <BlockRenderer blocks={data} heroVideoSrc={heroVideo?.mediaItemUrl || heroVideo?.sourceUrl} />;
 }
 
 export async function generateMetadata({ params }) {
@@ -42,7 +46,7 @@ export async function generateMetadata({ params }) {
     title: seo?.title || "",
     description: seo?.description || "",
     robots: seo?.robots || "",
-    canonical: seo?.canonicalUrl || "https://iltridentepositano.com/",
+    canonical: seo?.canonicalUrl || "https://villasantasofia.it/",
     openGraph: {
       locale: seo?.openGraph?.locale || "",
       siteName: seo?.openGraph?.siteName || "",

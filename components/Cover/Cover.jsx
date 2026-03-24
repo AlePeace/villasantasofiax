@@ -42,7 +42,7 @@ export const Cover = ({
           src={img.url}
           alt={img.alt || "Cover background"}
           {...imgProps}
-          className="z-0"
+          className="z-0 object-cover"
           priority
           quality={100}
         />
