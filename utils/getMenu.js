@@ -11,6 +11,15 @@ export const getMenu = async (locale = "it") => {
               label
               cssClasses
               target
+              parentId
+                         childItems {
+                           nodes {
+                             uri
+                             label
+                             cssClasses
+                             target
+                           }
+                         }
             }
           }
           language {

@@ -24,13 +24,13 @@ const fallbackPalette = [
 ];
 
 const fallbackPaletteRight = [
-  { bg: "#FFF3E9", text: "#6C6C6C" },
-  { bg: "#ECF4F2", text: "#6C6C6C" },
-  { bg: "#FFF6EE", text: "#6C6C6C" },
-  { bg: "#E8EDF3", text: "#6C6C6C" },
-  { bg: "#E2E9DF", text: "#6C6C6C" },
-  { bg: "#FFE6D1", text: "#6C6C6C" },
-  { bg: "#E5F6FB", text: "#6C6C6C" },
+  { bg: "#FFF3E9", text: "#6C6C6C", text2: "#C53452" },
+  { bg: "#ECF4F2", text: "#6C6C6C", text2: "#57A691" },
+  { bg: "#FFF6EE", text: "#6C6C6C", text2: "#EFAC53" },
+  { bg: "#E8EDF3", text: "#6C6C6C", text2: "#1F5189" },
+  { bg: "#E2E9DF", text: "#6C6C6C", text2: "#A0B898" },
+  { bg: "#FFE6D1", text: "#6C6C6C", text2: "#FFAB67" },
+  { bg: "#E5F6FB", text: "#6C6C6C", text2: "#00ABD5" },
 ];
 
 const parseCardFromGroup = (group, index) => {
@@ -53,6 +53,8 @@ const parseCardFromGroup = (group, index) => {
     group?.attributes?.rightStyle?.color?.background || rightColors.bg;
   const rightText =
     group?.attributes?.rightStyle?.color?.text || rightColors.text;
+  const rightText2 =
+    group?.attributes?.rightStyle?.color?.text2 || rightColors.text2;
 
   const linkBlock = headings[2];
   const rawLinkHref =
@@ -73,6 +75,7 @@ const parseCardFromGroup = (group, index) => {
     text: leftText,
     rightBg,
     rightText,
+    rightText2,
   };
 };
 
@@ -235,7 +238,9 @@ export const AnimationCardCamere = ({ blocks }) => {
                   style={{ backgroundColor: card.bg, color: card.text }}
                   tabIndex={card.linkHref ? 0 : -1}
                   aria-disabled={!card.linkHref}
-                  onClick={!card.linkHref ? (e) => e.preventDefault() : undefined}
+                  onClick={
+                    !card.linkHref ? (e) => e.preventDefault() : undefined
+                  }
                 >
                   <div className="px-12 xl:px-20 py-12 space-y-6 text-center">
                     {card.title && (
@@ -265,7 +270,11 @@ export const AnimationCardCamere = ({ blocks }) => {
                       <Heading
                         level={card.link.attributes?.level}
                         content={card.link.attributes?.content}
-                        className="font-montecatini uppercase text-lg xl:text-xl"
+                        style={{
+                          backgroundColor: card.rightBg,
+                          color: card.rightText2,
+                        }}
+                        className="mx-auto w-full lg:w-fit px-10 lg:px-20 py-6 lg:py-8 z-10 uppercase text-white text-xl lg:text-2xl tracking-[1.92px] font-montecatini font-noraml text-base lg:text-2xl transition-all duration-300 text-center"
                       />
                     )}
                   </div>
