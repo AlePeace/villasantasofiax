@@ -1,5 +1,8 @@
 {
   "cookieConsent": {
     "manageConsent": "Manage Consent"
+  },
+  "MainMenu": {
+    "prenotaOra": "Book now"
   }
 }

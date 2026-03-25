@@ -1,5 +1,8 @@
 {
   "cookieConsent": {
     "manageConsent": "Gestisci Consenso"
+  },
+  "MainMenu": {
+    "prenotaOra": "Prenota ora"
   }
 }

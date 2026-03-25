@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import Image from "next/image";
 import { LanguageSwitcher } from "components/LanguageSwitcher";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export const MainMenu = ({
   menuData,
@@ -13,6 +14,7 @@ export const MainMenu = ({
   bgImage = null,
   prenotaUrl = "https://booking.inreception.com/villasantasofia",
 }) => {
+  const t = useTranslations("MainMenu");
   const [isOpen, setIsOpen] = useState(false);
   const overlayRef = useRef(null);
   const menuNavRef = useRef(null);
@@ -107,6 +109,7 @@ export const MainMenu = ({
       {/* ── Header bar ── */}
       <header
         className={`fixed top-0 left-0 w-full z-[9999] px-6 lg:px-14 py-5 lg:py-7 ${!isOpen ? "mix-blend-difference" : ""} `}
+        style={{ transform: "translateZ(0)", WebkitTransform: "translateZ(0)" }}
       >
         <div className="grid grid-cols-2 items-center">
           {/* Left: Hamburger + Language Switcher */}
@@ -148,7 +151,7 @@ export const MainMenu = ({
                   : "text-white hover:text-blue"
               }`}
             >
-              Prenota ora
+              {t("prenotaOra")}
             </Link>
           </div>
         </div>

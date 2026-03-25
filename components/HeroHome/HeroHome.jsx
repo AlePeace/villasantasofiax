@@ -51,7 +51,6 @@ export const HeroHome = ({ blocks, videoSrc, videoPoster }) => {
         style={{
           background:
             "linear-gradient(179.96deg, rgba(0, 0, 0, 0) 0.04%, rgba(0, 0, 0, 0.26) 70.31%)",
-          mixBlendMode: "darken",
         }}
       />
 
