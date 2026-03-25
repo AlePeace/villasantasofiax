@@ -129,7 +129,7 @@ export const CilentoHome = ({ blocks }) => {
           />
         </svg>
       </div>
-      <div>
+      <div className="z-20 relative">
         <div>
           {headings && (
             <Heading

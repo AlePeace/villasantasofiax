@@ -38,11 +38,12 @@ export const HeroHome = ({ blocks, videoSrc, videoPoster }) => {
     <section
       ref={container}
       className="w-full h-screen relative overflow-hidden"
+      style={{ WebkitTransform: "translateZ(0)", transform: "translateZ(0)" }}
     >
       <VideoBlock
         src={videoSrc}
         poster={videoPoster}
-        className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+        className="absolute inset-0 w-full h-full object-cover z-20 pointer-events-none"
       />
 
       {/* Gradient overlay */}
