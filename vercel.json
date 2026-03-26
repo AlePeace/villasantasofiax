@@ -1,12 +1,147 @@
 {
   "redirects": [
     {
-      "source": "/it",
+      "source": "/book-now",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "en/book-now",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/chi-siamo",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "en/contact-us",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/contact-us",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/contattaci",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/dintorni",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "en/dintorni",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/gli-appartamenti",
+      "destination": "/camere-suites",
+      "permanent": true
+    },
+    {
+      "source": "/grazie-per-il-tuo-pagamento",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/home",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "en/home",
+      "destination": "/en",
+      "permanent": true
+    },
+    {
+      "source": "/my-account",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "en/my-account",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/prenota-ora",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "en/thanks-for-your-payment",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "en/the-apartments",
+      "destination": "en/rooms-suites",
+      "permanent": true
+    },
+    {
+      "source": "/the-apartments",
+      "destination": "/rooms-suites",
+      "permanent": true
+    },
+    {
+      "source": "/alento-river-oasis",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "en/alento-river-oasis",
       "destination": "/",
       "permanent": true
     },
     {
       "source": "/borghi-da-non-perdere",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/casert-royal-palace",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "en/casert-royal-palace",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/caves-of-palinuro",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "en/caves-of-palinuro",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/elea-velia",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "en/elea-velia",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/felitto-and-le-gole-del-calore",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "en/felitto-and-le-gole-del-calore",
       "destination": "/",
       "permanent": true
     },
@@ -21,6 +156,11 @@
       "permanent": true
     },
     {
+      "source": "en/la-certosa-di-padula",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/la-costiera-amalfitana",
       "destination": "/",
       "permanent": true
@@ -31,42 +171,27 @@
       "permanent": true
     },
     {
+      "source": "en/la-reggia-di-caserta",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/le-grotte-di-pertosa",
       "destination": "/",
       "permanent": true
     },
     {
-      "source": "/le-spiaggie-piu-belle-della-costa",
+      "source": "/le-spiagge-piu-belle-della-costa",
       "destination": "/",
       "permanent": true
     },
     {
-      "source": "/oasi-del-fiume-alento",
+      "source": "en/le-spiagge-piu-belle-della-costa",
       "destination": "/",
       "permanent": true
     },
     {
-      "source": "/oasi-del-fiume-alento",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/palinuro-e-le-sue-grotte",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/pass-ascea-per-turisti-come-accedere-alle-spiagge-di-ascea-marina",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/pompei",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/trekking-ascea-cilento",
+      "source": "/napoli-il-centro-storico",
       "destination": "/",
       "permanent": true
     }
