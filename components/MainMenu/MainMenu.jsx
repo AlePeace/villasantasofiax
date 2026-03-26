@@ -288,8 +288,8 @@ export const MainMenu = ({
                           key={child.uri ?? childIdx}
                           href={child.uri}
                           onClick={handleLinkClick}
-                          className="block relative font-montecatini text-sm text-blue
-                          uppercase tracking-wide leading-none py-1 lg:py-2 hover:text-lightblue transition-colors duration-300 group z-20 text-right"
+                          className="block relative font-montecatini text-base text-blue
+                          uppercase tracking-wide leading-none py-1 lg:py-2 hover:text-lightblue transition-colors duration-300 group z-20 text-center"
                         >
                           <span className="inline-block transition-transform duration-300 group-hover:translate-x-3">
                             {child.label}

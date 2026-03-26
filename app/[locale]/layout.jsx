@@ -5,6 +5,7 @@ import { getMenu } from "utils/getMenu";
 import { getMenuBgImage } from "utils/getMenuBgImage";
 import { MainMenu } from "components/MainMenu";
 import { SmoothScroll } from "components/SmoothScroll";
+import { GoogleTagManager } from "@next/third-parties/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -50,6 +51,7 @@ export default async function LocaleLayout({ children, params }) {
 
   return (
     <html lang={locale}>
+      <GoogleTagManager gtmId="GTM-W77DV3V7" />
       <body className={`${nunito.variable} ${montecatini.variable}`}>
         <NextIntlClientProvider messages={messages}>
           <SmoothScroll>

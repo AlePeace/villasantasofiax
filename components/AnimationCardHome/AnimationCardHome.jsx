@@ -303,7 +303,7 @@ export const AnimationCardHome = ({ blocks }) => {
                   <Heading
                     level={card.title.attributes?.level}
                     content={card.title.attributes?.content}
-                    className="font-montecatini font-normal text-5xl"
+                    className="font-montecatini font-normal text-4xl"
                   />
                 )}
                 {card.paragraph && (

@@ -411,7 +411,7 @@ export const AnimationCardCamere = ({ blocks }) => {
                 {card.list && (
                   <List
                     className="flex items-center justify-between pt-5"
-                    contentClassName="font-montecatini"
+                    contentClassName="font-montecatini text-xs"
                     blocks={card.list.innerBlocks}
                   />
                 )}
