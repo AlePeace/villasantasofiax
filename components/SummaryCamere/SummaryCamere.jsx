@@ -1,7 +1,12 @@
+"use client";
 // Mappa tema per camera — chiave = classe CSS assegnata al gruppo in WordPress
 
+import { useRef } from "react";
 import { Heading } from "components/Heading";
 import Image from "next/image";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
 
 // es. blocco gruppo con classe "positano" → usa il tema "positano"
 // Le classi Tailwind devono essere stringhe complete per essere rilevate dal JIT
@@ -48,15 +53,15 @@ const getTheme = (group) => {
   return CAMERA_THEMES[key] ?? CAMERA_THEMES.default;
 };
 
-
 export const SummaryCamere = ({ blocks }) => {
+  const swiperRef = useRef(null);
   const theme = getTheme(blocks);
   const { innerBlocks = [] } = blocks;
 
-  const imageBlock = innerBlocks.find((b) => b.name === "core/image");
+  const imageBlocks = innerBlocks.filter((b) => b.name === "core/image");
   const headingBlocks = innerBlocks.filter((b) => b.name === "core/heading");
 
-  const image = imageBlock?.attributes || null;
+  const images = imageBlocks.map((b) => b.attributes).filter(Boolean);
   const title = headingBlocks[0]?.attributes || null;
   const subtitle = headingBlocks[1]?.attributes || null;
 
@@ -94,33 +99,69 @@ export const SummaryCamere = ({ blocks }) => {
         </svg>
       </div>
       <div className="pb-10 px-5 max-w-7xl mx-auto relative">
-        {image && (
-          <div className="w-full">
-            <Image
-              src={image.url}
-              alt={image.alt || "Image"}
-              className={`object-cover w-full h-[70vh] pointer-events-none will-change-transform`}
-              width={image.width}
-              height={image.height}
-              priority
-            />
+        {images.length > 0 && (
+          <div className="relative w-full">
+            <Swiper
+              onSwiper={(swiper) => { swiperRef.current = swiper; }}
+              modules={[Navigation]}
+              loop={images.length > 1}
+              className="w-full h-[70vh]"
+            >
+              {images.map((img, i) => (
+                <SwiperSlide key={i}>
+                  <Image
+                    src={img.url}
+                    alt={img.alt || "Image"}
+                    className="object-cover w-full h-full pointer-events-none will-change-transform"
+                    width={img.width}
+                    height={img.height}
+                    priority={i === 0}
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+            {images.length > 1 && (
+              <>
+                <button
+                  onClick={() => swiperRef.current?.slidePrev()}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-10 h-10 rounded-full bg-[#F5F0E8]/70 hover:bg-[#F5F0E8] transition-colors"
+                  aria-label="Slide precedente"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B5E4E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M15 18l-6-6 6-6" />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => swiperRef.current?.slideNext()}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-10 h-10 rounded-full bg-[#F5F0E8]/70 hover:bg-[#F5F0E8] transition-colors"
+                  aria-label="Slide successivo"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B5E4E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 18l6-6-6-6" />
+                  </svg>
+                </button>
+              </>
+            )}
           </div>
         )}
         <div className="pt-5 space-y-5">
-            {title && (
-              <Heading
-                level={title.level}
-                content={title.content}
-                className={theme.text + " font-nunito font-light text-base"}
-              />
-            )}
-            {subtitle && (
-              <Heading
-                level={subtitle.level}
-                content={subtitle.content}
-                className={theme.text + " font-montecatini font-normal text-5xl lg:text-7xl"}
-              />
-            )}
+          {title && (
+            <Heading
+              level={title.level}
+              content={title.content}
+              className={theme.text + " font-nunito font-light text-base"}
+            />
+          )}
+          {subtitle && (
+            <Heading
+              level={subtitle.level}
+              content={subtitle.content}
+              className={
+                theme.text +
+                " font-montecatini font-normal text-5xl lg:text-7xl"
+              }
+            />
+          )}
         </div>
       </div>
     </section>
