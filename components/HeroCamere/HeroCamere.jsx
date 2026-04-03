@@ -47,7 +47,7 @@ export const HeroCamere = ({ blocks }) => {
         alt={image.alt || "Cover background"}
         width={image.attributes?.width}
         height={image.attributes?.height}
-        className="object-cover object-center"
+        className="object-cover w-full h-full object-center"
         priority
         fetchPriority="high"
         quality={100}
