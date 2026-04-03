@@ -107,8 +107,18 @@ export const MainMenu = ({
   return (
     <>
       {/* ── Header bar ── */}
+      {/* Prenota Ora — fuori dall'header per non essere affetto dal mix-blend-difference */}
+      <div className="fixed top-0 right-0 z-9999 px-6 lg:px-14 py-5 lg:py-7 flex justify-end">
+        <Link
+          href={prenotaUrl}
+          className={`font-montecatini uppercase lg:text-xl text-sm tracking-[0.18em] transition-all duration-500 bg-blue py-4 px-6 hover:bg-lightblue text-white`}
+        >
+          {t("prenotaOra")}
+        </Link>
+      </div>
+
       <header
-        className={`fixed top-0 left-0 w-full z-[9999] px-6 lg:px-14 py-5 lg:py-7 ${!isOpen ? "mix-blend-difference" : ""} `}
+        className={`fixed top-0 left-0 w-full z-9998 px-6 lg:px-14 py-5 lg:py-7 ${!isOpen ? "mix-blend-difference" : ""} `}
         style={{ transform: "translateZ(0)", WebkitTransform: "translateZ(0)" }}
       >
         <div className="grid grid-cols-2 items-center">
@@ -117,7 +127,7 @@ export const MainMenu = ({
             <button
               onClick={handleToggle}
               aria-label={isOpen ? "Chiudi menu" : "Apri menu"}
-              className="relative w-7 h-[18px] flex flex-col justify-between cursor-pointer group shrink-0"
+              className="relative w-7 h-[18px] flex flex-col justify-between cursor-pointer group shrink-0 transition-all duration-500"
             >
               <span
                 className={`block h-px transition-all duration-400 origin-center ${
@@ -141,26 +151,15 @@ export const MainMenu = ({
             <LanguageSwitcher isOpen={isOpen} />
           </div>
 
-          {/* Right: Prenota Ora */}
-          <div className="flex justify-end">
-            <Link
-              href={prenotaUrl}
-              className={`font-montecatini uppercase lg:text-xl text-sm tracking-[0.18em] transition-all duration-500 ${
-                isOpen
-                  ? "text-blue hover:text-lightblue"
-                  : "text-white hover:text-blue"
-              }`}
-            >
-              {t("prenotaOra")}
-            </Link>
-          </div>
+          {/* Right: placeholder per mantenere il layout a 2 colonne */}
+          <div />
         </div>
       </header>
 
       {/* ── Full Menu Overlay ── */}
       <div
         ref={overlayRef}
-        className={`fixed inset-0 z-[9998] h-screen opacity-0 bg-blue flex flex-col items-center justify-between px-8 lg:px-20 pt-28 lg:pt-36 pb-10 lg:pb-16 ${
+        className={`fixed inset-0 z-9997 h-screen opacity-0 bg-blue flex flex-col items-center justify-between px-8 lg:px-20 pt-28 lg:pt-36 pb-10 lg:pb-16 ${
           !isOpen ? "pointer-events-none" : ""
         }`}
       >
@@ -262,7 +261,7 @@ export const MainMenu = ({
           </div>
         )}
         {/* Menu items */}
-        <nav ref={menuNavRef}>
+        <nav className="lg:scale-90 z-10" ref={menuNavRef}>
           {nodes
             .filter((item) => !item.parentId) // solo voci root
             .map((item, idx) => {

@@ -1,39 +1,21 @@
+import Image from "next/image";
 import { Buttons } from "components/Buttons";
-import { Cover } from "components/Cover";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
 
 export const CilentoHome = ({ blocks }) => {
   const innerBlocks = blocks?.innerBlocks || [];
-  const headings = innerBlocks.find((block) => block.name === "core/heading");
-  const covers = innerBlocks.filter((block) => block.name === "core/cover");
-  const getCoverBackground = (coverBlock) => {
-    const url = coverBlock?.attributes?.url;
-    const isVideo =
-      coverBlock?.attributes?.backgroundType === "video" ||
-      url?.endsWith(".mp4");
-
-    return {
-      backgroundVideo: isVideo && url ? { url } : null,
-      backgroundImage:
-        !isVideo && url
-          ? { url, alt: coverBlock?.attributes?.alt || "Cover background" }
-          : null,
-      backgroundColor: coverBlock?.attributes?.customOverlayColor || null,
-    };
-  };
+  const allHeadings = innerBlocks.filter((block) => block.name === "core/heading");
+  const allImages = innerBlocks.filter((block) => block.name === "core/image");
   const buttons = innerBlocks.find((block) => block.name === "core/buttons");
   const paragraph = innerBlocks.find(
     (block) => block.name === "core/paragraph",
   );
-  const firstCover = covers[0];
-  const secondCover = covers[1];
-  const firstHeadingCover = firstCover?.innerBlocks?.find(
-    (block) => block.name === "core/heading",
-  );
-  const secondHeadingCover = secondCover?.innerBlocks?.find(
-    (block) => block.name === "core/heading",
-  );
+  const headings = allHeadings[0];
+  const firstImage = allImages[0];
+  const secondImage = allImages[1];
+  const firstHeadingCover = allHeadings[1];
+  const secondHeadingCover = allHeadings[2];
 
   return (
     <section className="pt-10 lg:pt-36 px-5 lg:px-40 relative z-20">
@@ -140,19 +122,26 @@ export const CilentoHome = ({ blocks }) => {
           )}
         </div>
         <div className="relative">
-          {firstCover && (
-            <Cover
-              background={getCoverBackground(firstCover)}
-              className="!aspect-video !h-full w-full !justify-start !items-end p-5 lg:p-8"
-            >
+          {firstImage && (
+            <div className="aspect-video h-full w-full relative min-h-[400px] flex justify-start items-end overflow-hidden p-5 lg:p-8">
+              <Image
+                src={firstImage.attributes?.url}
+                alt={firstImage.attributes?.alt || "Cover background"}
+                fill
+                className="z-0 object-cover"
+                priority
+                quality={100}
+              />
               {firstHeadingCover && (
-                <Heading
-                  level={firstHeadingCover.attributes?.level}
-                  content={firstHeadingCover.attributes?.content}
-                  className="font-montecatini font-normal text-5xl lg:text-6xl xl:text-7xl text-white"
-                />
+                <div className="max-w-5xl z-10">
+                  <Heading
+                    level={firstHeadingCover.attributes?.level}
+                    content={firstHeadingCover.attributes?.content}
+                    className="font-montecatini font-normal text-5xl lg:text-6xl xl:text-7xl text-white"
+                  />
+                </div>
               )}
-            </Cover>
+            </div>
           )}
           {buttons && (
             <div className="absolute right-5 lg:right-10 -translate-y-1/2">
@@ -170,20 +159,26 @@ export const CilentoHome = ({ blocks }) => {
         </div>
       </div>
       <div className="pt-10 lg:pt-36 relative z-50 overflow-visible">
-        {secondCover && (
+        {secondImage && (
           <div className="relative z-30 shadow-2xl bg-white p-5 lg:w-1/2 origin-bottom-right -rotate-12">
-            <Cover
-              background={getCoverBackground(secondCover)}
-              className="!aspect-video !h-full w-full !justify-end !items-end p-5 lg:p-8"
-            >
+            <div className="aspect-video h-full w-full relative min-h-[400px] flex justify-end items-end overflow-hidden p-5 lg:p-8">
+              <Image
+                src={secondImage.attributes?.url}
+                alt={secondImage.attributes?.alt || "Cover background"}
+                fill
+                className="z-0 object-cover"
+                quality={100}
+              />
               {secondHeadingCover && (
-                <Heading
-                  level={secondHeadingCover.attributes?.level}
-                  content={secondHeadingCover.attributes?.content}
-                  className="font-montecatini font-normal text-4xl text-white"
-                />
+                <div className="max-w-5xl z-10">
+                  <Heading
+                    level={secondHeadingCover.attributes?.level}
+                    content={secondHeadingCover.attributes?.content}
+                    className="font-montecatini font-normal text-4xl text-white"
+                  />
+                </div>
               )}
-            </Cover>
+            </div>
             <div className="absolute right-7 top-7 will-change-transform pointer-events-none">
               <svg
                 width="124"
