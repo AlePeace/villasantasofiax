@@ -234,7 +234,7 @@ export const AnimationCardCamere = ({ blocks }) => {
                 <Link
                   href={card.linkHref || "#"}
                   data-card-left
-                  className="basis-1/2 h-full flex items-center justify-center pointer-events-auto cursor-pointer"
+                  className="basis-1/2! h-full flex items-center justify-center pointer-events-auto cursor-pointer"
                   style={{ backgroundColor: card.bg, color: card.text }}
                   tabIndex={card.linkHref ? 0 : -1}
                   aria-disabled={!card.linkHref}
@@ -242,7 +242,7 @@ export const AnimationCardCamere = ({ blocks }) => {
                     !card.linkHref ? (e) => e.preventDefault() : undefined
                   }
                 >
-                  <div className="px-12 xl:px-48 py-12 space-y-6 text-center">
+                  <div className="px-12 py-12 space-y-6 text-center">
                     <div className="w-fit mx-auto">
                       <svg
                         width="83"
@@ -280,7 +280,7 @@ export const AnimationCardCamere = ({ blocks }) => {
                     {card.paragraph && (
                       <Paragraph
                         content={card.paragraph.attributes?.content}
-                        className="font-nunito font-light text-base xl:text-lg"
+                        className="font-nunito font-light text-base xl:text-lg lg:px-26"
                       />
                     )}
 
@@ -300,7 +300,7 @@ export const AnimationCardCamere = ({ blocks }) => {
 
                 <div
                   data-card-right
-                  className="basis-1/2 h-full overflow-hidden"
+                  className="basis-1/2! h-full overflow-hidden"
                 >
                   <div
                     data-card-right-reveal
