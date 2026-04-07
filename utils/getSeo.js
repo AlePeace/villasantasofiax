@@ -69,6 +69,54 @@ export const getSeo = async (uri, locale = "it") => {
               }
             }
           }
+          ... on Post {
+            seo {
+              title
+              description
+              robots
+              canonicalUrl
+              openGraph {
+                locale
+                siteName
+                type
+                title
+                description
+                url
+                twitterMeta {
+                  card
+                  title
+                  description
+                }
+              }
+            }
+            language {
+              code
+            }
+            translations {
+              seo {
+                title
+                description
+                robots
+                canonicalUrl
+                openGraph {
+                  locale
+                  siteName
+                  type
+                  title
+                  description
+                  url
+                  twitterMeta {
+                    card
+                    title
+                    description
+                  }
+                }
+              }
+              language {
+                code
+              }
+            }
+          }
         }
       }
     `,

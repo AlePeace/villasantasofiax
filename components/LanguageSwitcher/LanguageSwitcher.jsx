@@ -22,21 +22,15 @@ export const LanguageSwitcher = ({ isOpen = false }) => {
         >
           {index > 0 && (
             <span
-              className={`-mt-1 select-none ${isOpen ? "text-blue/50" : "text-white/50"}`}
+              className="-mt-1 select-none text-white/50"
             >
               |
             </span>
           )}
           <button
             onClick={() => handleChange(loc)}
-            className={`font-montecatini font-light text-xl uppercase px-1 py-1 rounded transition-colors cursor-pointer transition-all duration-500 ${
-              isOpen ? "text-blue" : "text-white"
-            } ${
-              locale === loc
-                ? "!font-bold"
-                : isOpen
-                  ? "hover:bg-blue/10"
-                  : "hover:bg-white/10"
+            className={`font-montecatini font-light text-xl uppercase px-1 py-1 rounded transition-colors cursor-pointer transition-all duration-500 text-white hover:bg-white/10 ${
+              locale === loc ? "!font-bold" : ""
             }`}
           >
             {loc}

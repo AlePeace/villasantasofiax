@@ -31,18 +31,63 @@
       "permanent": true
     },
     {
-      "source": "/dintorni",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/en/dintorni",
-      "destination": "/",
-      "permanent": true
-    },
-    {
       "source": "/gli-appartamenti",
       "destination": "/camere-suites",
+      "permanent": true
+    },
+    {
+      "source": "/appartamenti/leucosya",
+      "destination": "/camere-suites/leucosya",
+      "permanent": true
+    },
+    {
+      "source": "/appartamenti/velia",
+      "destination": "/camere-suites/velia",
+      "permanent": true
+    },
+    {
+      "source": "/appartamenti/camerota",
+      "destination": "/camere-suites/camerota",
+      "permanent": true
+    },
+    {
+      "source": "/appartamenti/pioppi",
+      "destination": "/camere-suites/pioppi",
+      "permanent": true
+    },
+    {
+      "source": "/testimonials/testimonial-3",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/dintorni/page/2",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/tag/pass-ascea-turisti",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/appartamenti/positano",
+      "destination": "/camere-suites/positano",
+      "permanent": true
+    },
+    {
+      "source": "/en/category/tour",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en/accommodation",
+      "destination": "/en/camere-suites",
+      "permanent": true
+    },
+    {
+      "source": "/en/accommodation/palinuro",
+      "destination": "/en/camere-suites/palinuro",
       "permanent": true
     },
     {

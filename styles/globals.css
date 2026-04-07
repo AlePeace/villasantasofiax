@@ -18,6 +18,7 @@
   --color-darkgray: #8b8b8b;
   --color-overlay: #fcf5ee;
   --color-text: #6c6c6c;
+  --color-bookh: #d9d9d9;
 
   --font-montecatini: var(--font-montecatini), serif;
   --font-nunito: var(--font-nunito), sans-serif;
@@ -40,6 +41,6 @@
 ::-webkit-scrollbar-thumb {
   @apply lg:bg-lightblue lg:rounded-full lg:transition-all lg:duration-300 lg:ease-in-out;
 }
-body{
+body {
   @apply bg-white;
 }

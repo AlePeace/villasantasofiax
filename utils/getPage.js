@@ -24,6 +24,23 @@ export const getPage = async (uri, locale = "it") => {
               }
             }
           }
+          ... on Post {
+            id
+            title
+            blocks(postTemplate: false)
+            language {
+              code
+            }
+            translations {
+              id
+              title
+              uri
+              blocks(postTemplate: false)
+              language {
+                code
+              }
+            }
+          }
         }
       }
     `,
@@ -75,6 +92,7 @@ export const getPage = async (uri, locale = "it") => {
   if (pageLanguage === locale) {
     console.log(`[getPage] ✅ Page is already in requested locale "${locale}"`);
     const blocks = cleanAndTransformBlocks(page.blocks);
+    console.log(`[getPage] blocks count: ${blocks.length}`, blocks.map(b => `${b.name} → ${b.attributes?.metadata?.name || b.attributes?.className || "(no name)"}`));
     return blocks;
   }
 

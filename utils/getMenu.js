@@ -5,21 +5,21 @@ export const getMenu = async (locale = "it") => {
     query MenusQuery($language: String!) {
       menus(where: {language: $language}) {
         nodes {
-          menuItems {
+          menuItems(first: 100) {
             nodes {
               uri
               label
               cssClasses
               target
               parentId
-                         childItems {
-                           nodes {
-                             uri
-                             label
-                             cssClasses
-                             target
-                           }
-                         }
+              childItems(first: 50) {
+                nodes {
+                  uri
+                  label
+                  cssClasses
+                  target
+                }
+              }
             }
           }
           language {

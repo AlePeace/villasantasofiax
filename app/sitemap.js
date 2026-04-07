@@ -1,6 +1,41 @@
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://villasantasofia.it";
 
+async function getAllPosts() {
+  const params = {
+    query: `
+      query SitemapPostsQuery {
+        posts(first: 100, where: { status: PUBLISH }) {
+          nodes {
+            uri
+            modified
+            language {
+              code
+            }
+            translations {
+              uri
+              modified
+              language {
+                code
+              }
+            }
+          }
+        }
+      }
+    `,
+  };
+
+  const response = await fetch(process.env.WP_GRAPHQL_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(params),
+    next: { revalidate: 86400 },
+  });
+
+  const { data } = await response.json();
+  return data?.posts?.nodes || [];
+}
+
 async function getAllPages() {
   const params = {
     query: `
@@ -43,7 +78,7 @@ function uriToUrl(uri) {
 }
 
 export default async function sitemap() {
-  const pages = await getAllPages();
+  const [pages, posts] = await Promise.all([getAllPages(), getAllPosts()]);
   const entries = [];
   const seenUris = new Set();
 
@@ -70,6 +105,32 @@ export default async function sitemap() {
         lastModified: new Date(translation.modified),
         changeFrequency: "monthly",
         priority: 0.7,
+      });
+    }
+  }
+
+  // Aggiungi i post al sitemap
+  const seenPostUris = new Set();
+  for (const post of posts) {
+    const lang = post.language?.code?.toLowerCase();
+    if (lang !== "it" || seenPostUris.has(post.uri)) continue;
+
+    seenPostUris.add(post.uri);
+    entries.push({
+      url: uriToUrl(post.uri),
+      lastModified: new Date(post.modified),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    });
+
+    for (const translation of post.translations || []) {
+      if (seenPostUris.has(translation.uri)) continue;
+      seenPostUris.add(translation.uri);
+      entries.push({
+        url: uriToUrl(translation.uri),
+        lastModified: new Date(translation.modified),
+        changeFrequency: "weekly",
+        priority: 0.6,
       });
     }
   }

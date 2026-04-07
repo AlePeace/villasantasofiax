@@ -1,5 +1,6 @@
 import { AnimationCardCamere } from "components/AnimationCardCamere";
 import { AnimationCardHome } from "components/AnimationCardHome";
+import { ArticleGroup } from "components/ArticleGroup/ArticleGroup";
 import { BookCamera } from "components/BookCamera";
 import { BookExpHome } from "components/BookExpHome/BookExpHome";
 import { EsterniVilla } from "components/EsterniVilla";
@@ -8,6 +9,7 @@ import { CilentoHome } from "components/CilentoHome";
 import { DescriptionCamere } from "components/DescriptionCamere/DescriptionCamere";
 import { Footer } from "components/Footer";
 import { HeroCamere } from "components/HeroCamere/HeroCamere";
+import { HeroDintorni } from "components/HeroDintorni/HeroDintorni";
 import { HeroHome } from "components/HeroHome/HeroHome";
 import { InfoCamera } from "components/InfoCamera";
 import { ServicesCamera } from "components/ServicesCamera/ServicesCamera";
@@ -75,6 +77,12 @@ export const BlockRenderer = ({ blocks, heroVideoSrc }) => {
 
           case "EsterniVilla":
             return <EsterniVilla key={block.id} blocks={block} />;
+
+          case "HeroDintorni":
+            return <HeroDintorni key={block.id} blocks={block} />;
+
+          case "ArticleGroup":
+            return <ArticleGroup key={block.id} blocks={block} />;
 
           case "Footer":
             return <Footer key={block.id} blocks={block} />;
