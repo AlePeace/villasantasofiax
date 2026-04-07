@@ -14,7 +14,7 @@ export const SmoothScroll = ({ children }) => {
 
   useEffect(() => {
     if (window.matchMedia("(min-width: 1024px)").matches) {
-      ScrollTrigger.normalizeScroll(true);
+      ScrollTrigger.normalizeScroll({ allowNestedScroll: true });
     }
 
     function update(time) {
