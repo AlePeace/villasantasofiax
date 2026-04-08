@@ -171,122 +171,12 @@
       "permanent": true
     },
     {
-      "source": "/elea-velia",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/en/elea-velia",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/felitto-and-le-gole-del-calore",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/en/felitto-and-le-gole-del-calore",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/felitto-e-le-gole-del-calore",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/la-certosa-di-padula",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/en/la-certosa-di-padula",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/la-costiera-amalfitana",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/la-reggia-di-caserta",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/en/la-reggia-di-caserta",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/le-grotte-di-pertosa",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/le-spiagge-piu-belle-della-costa",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/en/le-spiagge-piu-belle-della-costa",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/napoli-il-centro-storico",
-      "destination": "/",
-      "permanent": true
-    },
-    {
       "source": "/napoli-the-historical-center",
       "destination": "/",
       "permanent": true
     },
     {
       "source": "/en/napoli-the-historical-center",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/oasi-del-fiume-alento",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/en/oasi-del-fiume-alento",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/paestum",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/en/paestum",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/palinuro-e-le-sue-grotte",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/pass-ascea-per-i-turisti-come-accedere-alle-spiagge-di-ascea-maina",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/pompei",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/en/pompei",
       "destination": "/",
       "permanent": true
     },
@@ -307,16 +197,6 @@
     },
     {
       "source": "/en/the-most-beautifull-beaches-of-the-coast",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/trekking-ascea-cilento",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/en/trekking-ascea-cilento",
       "destination": "/",
       "permanent": true
     },

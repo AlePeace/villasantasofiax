@@ -35,7 +35,7 @@ export const CameraHome = ({ blocks }) => {
           />
         </div>
        )}
-        {button && <Buttons blocks={button.innerBlocks} variant="CameraHome" />}
+        {button && <Buttons blocks={button.innerBlocks} variant="CameraHome"/>}
         <div className="lg:w-[35%] xl:w-[40%] z-0 lg:-mt-[15%] xl:-mt-[10%]">
           {imageRight && (
             <div className="relative z-10">

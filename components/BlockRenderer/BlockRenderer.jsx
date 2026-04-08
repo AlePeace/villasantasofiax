@@ -15,6 +15,7 @@ import { InfoCamera } from "components/InfoCamera";
 import { ServicesCamera } from "components/ServicesCamera/ServicesCamera";
 import { SuggestHome } from "components/SuggestHome";
 import { SummaryCamere } from "components/SummaryCamere/SummaryCamere";
+import { PostsGrid } from "components/PostsGrid";
 import { VillaHome } from "components/VillaHome";
 
 export const BlockRenderer = ({ blocks, heroVideoSrc }) => {
@@ -80,6 +81,9 @@ export const BlockRenderer = ({ blocks, heroVideoSrc }) => {
 
           case "HeroDintorni":
             return <HeroDintorni key={block.id} blocks={block} />;
+
+          case "PostsGrid":
+            return <PostsGrid key={block.id} />;
 
           case "ArticleGroup":
             return <ArticleGroup key={block.id} blocks={block} />;

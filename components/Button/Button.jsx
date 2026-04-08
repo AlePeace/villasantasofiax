@@ -7,6 +7,6 @@ export const Button = ({ url, content, className = "" }) => {
       href={relativeToAbsoluteUrls(url)}
       className={`inline-block px-6 py-3 transition-all duration-300 ${className}`}
       dangerouslySetInnerHTML={{ __html: content }}
-    />
+      />
   );
 };

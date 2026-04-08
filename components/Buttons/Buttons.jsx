@@ -38,7 +38,7 @@ export const Buttons = ({
     }
 
     if (variant === "BookExp") {
-      return "w-full lg:w-fit px-10 lg:px-20 py-6 lg:py-8 z-10 uppercase bg-blue text-white text-xl lg:text-2xl tracking-[1.92px] font-montecatini font-noraml text-base lg:text-2xl transition-all duration-300 hover:bg-lightblue hover:border-lightblue text-center";
+      return "relative w-full lg:w-fit px-10 lg:px-20 py-6 lg:py-8 z-10 uppercase bg-blue text-white text-xl lg:text-2xl tracking-[1.92px] font-montecatini font-noraml text-base lg:text-2xl transition-all duration-300 hover:bg-lightblue hover:border-lightblue text-center";
     }
 
     return "px-10 py-4 uppercase rounded-full bg-blue text-yellow font-semibold transition-all duration-300 hover:bg-yellow hover:text-blue";
@@ -60,7 +60,7 @@ export const Buttons = ({
         return null;
       })}
       {decoration && (
-        <div className="absolute inset-0 w-full h-full pointer-events-none">{decoration}</div>
+        <div className="absolute inset-2 pointer-events-none z-10">{decoration}</div>
       )}
     </div>
   );

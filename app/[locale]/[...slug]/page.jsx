@@ -25,7 +25,11 @@ export default async function Page({ params }) {
     notFound();
   }
 
-  return <BlockRenderer blocks={data} />;
+  return (
+    <div className={`page-${slug[0]}`}>
+      <BlockRenderer blocks={data} />
+    </div>
+  );
 }
 
 export async function generateMetadata({ params }) {

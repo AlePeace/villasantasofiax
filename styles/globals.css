@@ -44,3 +44,6 @@
 body {
   @apply bg-white;
 }
+.page-dintorni {
+    background: linear-gradient(to bottom, #ffffff, #f3eadf);
+}

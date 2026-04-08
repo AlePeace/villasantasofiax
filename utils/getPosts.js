@@ -20,6 +20,13 @@ export const getPosts = async (locale = "it") => {
                 }
               }
             }
+            categories {
+              nodes {
+                id
+                name
+                slug
+              }
+            }
             language {
               code
             }
