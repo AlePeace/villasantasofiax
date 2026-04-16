@@ -10,6 +10,7 @@ export const getPage = async (uri, locale = "it") => {
           ... on Page {
             id
             title
+            content
             blocks(postTemplate: false)
             language {
               code
@@ -18,6 +19,7 @@ export const getPage = async (uri, locale = "it") => {
               id
               title
               uri
+              content
               blocks(postTemplate: false)
               language {
                 code
@@ -27,6 +29,7 @@ export const getPage = async (uri, locale = "it") => {
           ... on Post {
             id
             title
+            content
             blocks(postTemplate: false)
             language {
               code
@@ -35,6 +38,7 @@ export const getPage = async (uri, locale = "it") => {
               id
               title
               uri
+              content
               blocks(postTemplate: false)
               language {
                 code
@@ -53,8 +57,8 @@ export const getPage = async (uri, locale = "it") => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(params),
-    cache: "no-store",
-    //next: { revalidate: 86400 },
+    //cache: "no-store",
+    next: { revalidate: 86400 },
   });
 
   const { data, errors } = await response.json();
@@ -92,8 +96,14 @@ export const getPage = async (uri, locale = "it") => {
   if (pageLanguage === locale) {
     console.log(`[getPage] ✅ Page is already in requested locale "${locale}"`);
     const blocks = cleanAndTransformBlocks(page.blocks);
-    console.log(`[getPage] blocks count: ${blocks.length}`, blocks.map(b => `${b.name} → ${b.attributes?.metadata?.name || b.attributes?.className || "(no name)"}`));
-    return blocks;
+    console.log(
+      `[getPage] blocks count: ${blocks.length}`,
+      blocks.map(
+        (b) =>
+          `${b.name} → ${b.attributes?.metadata?.name || b.attributes?.className || "(no name)"}`,
+      ),
+    );
+    return { blocks, content: page.content || null, title: page.title || null };
   }
 
   // Altrimenti cerca tra le traduzioni
@@ -106,7 +116,11 @@ export const getPage = async (uri, locale = "it") => {
       `[getPage] ✅ Found translation in "${locale}": "${translation.title}"`,
     );
     const blocks = cleanAndTransformBlocks(translation.blocks);
-    return blocks;
+    return {
+      blocks,
+      content: translation.content || null,
+      title: translation.title || null,
+    };
   }
 
   console.log(
@@ -114,5 +128,5 @@ export const getPage = async (uri, locale = "it") => {
   );
   // Fallback: usa la pagina originale
   const blocks = cleanAndTransformBlocks(page.blocks);
-  return blocks;
+  return { blocks, content: page.content || null, title: page.title || null };
 };

@@ -1,6 +1,8 @@
 import { BlockRenderer } from "components/BlockRenderer";
 import { getPage } from "utils/getPage";
+import { getFooter } from "utils/getFooter";
 import { getSeo } from "utils/getSeo";
+import { Footer } from "components/Footer";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
@@ -25,9 +27,38 @@ export default async function Page({ params }) {
     notFound();
   }
 
+  const { blocks, content, title } = data;
+
+  // Pagine con blocchi Gutenberg personalizzati riconoscibili dal BlockRenderer
+  const hasKnownBlocks = blocks?.some((b) => b.name === "core/group");
+
+  if (hasKnownBlocks) {
+    return (
+      <div className={`page-${slug[0]}`}>
+        <BlockRenderer blocks={blocks} />
+      </div>
+    );
+  }
+
+  // Fallback per pagine con contenuto classico/shortcode (es. cookie-policy, privacy-policy)
+  const footerBlock = await getFooter();
+
   return (
     <div className={`page-${slug[0]}`}>
-      <BlockRenderer blocks={data} />
+      <article className="max-w-3xl mx-auto px-6 py-24 lg:py-32">
+        {title && (
+          <h1 className="font-montecatini text-blue text-3xl lg:text-5xl mb-10">
+            {title}
+          </h1>
+        )}
+        {content ? (
+          <div
+            className="font-nunito text-blue/80 text-base leading-relaxed wp-content"
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
+        ) : null}
+      </article>
+      {footerBlock && <Footer blocks={footerBlock} />}
     </div>
   );
 }

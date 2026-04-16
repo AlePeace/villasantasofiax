@@ -59,13 +59,17 @@ export const getPosts = async (locale = "it") => {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(params),
-    cache: "no-store",
+    //cache: "no-store",
+    next: { revalidate: 86400 },
   });
 
   const { data, errors } = await response.json();
 
   if (errors) {
-    console.error("[getPosts] GraphQL errors:", JSON.stringify(errors, null, 2));
+    console.error(
+      "[getPosts] GraphQL errors:",
+      JSON.stringify(errors, null, 2),
+    );
   }
 
   const nodes = data?.posts?.nodes || [];

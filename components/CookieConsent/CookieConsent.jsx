@@ -125,8 +125,8 @@ export default function CookieConsentBanner() {
               acceptNecessaryBtn: "Rifiuta tutti",
               showPreferencesBtn: "Gestisci preferenze",
               footer: `
-                <a href="/privacy-policy">Privacy Policy</a>
-                <a href="/cookie-policy">Cookie Policy</a>
+                <a href="/dichiarazione-sulla-privacy-ue">Privacy Policy</a>
+                <a href="/cookie-policy-ue">Cookie Policy</a>
               `,
             },
             preferencesModal: {
@@ -246,8 +246,8 @@ export default function CookieConsentBanner() {
               acceptNecessaryBtn: "Reject all",
               showPreferencesBtn: "Manage preferences",
               footer: `
-                <a href="/privacy-policy">Privacy Policy</a>
-                <a href="/cookie-policy">Cookie Policy</a>
+                <a href="/en/dichiarazione-sulla-privacy-ue">Privacy Policy</a>
+                <a href="/en/cookie-policy-ue">Cookie Policy</a>
               `,
             },
             preferencesModal: {

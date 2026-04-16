@@ -18,7 +18,8 @@ export const getFooter = async () => {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(params),
-    cache: "no-store",
+    //cache: "no-store",
+    next: { revalidate: 86400 },
   });
 
   const { data } = await response.json();

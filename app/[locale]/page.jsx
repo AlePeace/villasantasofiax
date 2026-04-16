@@ -30,7 +30,8 @@ export default async function Home({ params }) {
   if (!data) {
     notFound();
   }
-  return <BlockRenderer blocks={data} heroVideoSrc={heroVideo?.mediaItemUrl || heroVideo?.sourceUrl} />;
+  const { blocks } = data;
+  return <BlockRenderer blocks={blocks} heroVideoSrc={heroVideo?.mediaItemUrl || heroVideo?.sourceUrl} />;
 }
 
 export async function generateMetadata({ params }) {

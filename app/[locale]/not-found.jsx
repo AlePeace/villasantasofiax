@@ -3,7 +3,7 @@ import { getPage } from "utils/getPage";
 import { Footer } from "components/Footer";
 
 export default async function NotFound() {
-  const blocks = await getPage("/", "it");
+  const { blocks } = await getPage("/", "it");
   const footerBlock = blocks?.find(
     (b) =>
       b.name === "core/group" &&
