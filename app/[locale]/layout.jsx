@@ -11,6 +11,7 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
 import CookieConsentBanner from "components/CookieConsent/CookieConsent";
+import { TranslationsProvider } from "components/TranslationsProvider";
 
 const montecatini = localFont({
   src: [
@@ -54,11 +55,13 @@ export default async function LocaleLayout({ children, params }) {
       <GoogleTagManager gtmId="GTM-W77DV3V7" />
       <body className={`${nunito.variable} ${montecatini.variable}`}>
         <NextIntlClientProvider messages={messages}>
-          <SmoothScroll>
-            <MainMenu menuData={menus} menus={menus} bgImage={bgImage} />
-            {children}
-            <CookieConsentBanner />
-          </SmoothScroll>
+          <TranslationsProvider>
+            <SmoothScroll>
+              <MainMenu menuData={menus} menus={menus} bgImage={bgImage} />
+              {children}
+              <CookieConsentBanner />
+            </SmoothScroll>
+          </TranslationsProvider>
         </NextIntlClientProvider>
       </body>
     </html>

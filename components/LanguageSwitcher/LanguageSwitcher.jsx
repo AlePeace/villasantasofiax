@@ -3,14 +3,24 @@
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "../../i18n/navigation";
 import { routing } from "../../i18n/routing";
+import { usePageTranslations } from "components/TranslationsProvider";
 
 export const LanguageSwitcher = ({ isOpen = false }) => {
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
+  const { translations } = usePageTranslations();
 
   const handleChange = (newLocale) => {
-    router.replace(pathname, { locale: newLocale });
+    const translatedUri = translations?.[newLocale];
+    if (translatedUri) {
+      // Rimuove il prefisso locale dall'URI WordPress (/en/slug → /slug)
+      // perché next-intl lo aggiunge da solo in base a { locale }
+      const path = translatedUri.replace(new RegExp(`^/${newLocale}`), "") || "/";
+      router.replace(path, { locale: newLocale });
+    } else {
+      router.replace(pathname, { locale: newLocale });
+    }
   };
 
   return (

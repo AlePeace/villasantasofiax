@@ -1,0 +1,1 @@
+export { TranslationsSync } from "./TranslationsSync";
