@@ -41,6 +41,16 @@ export const getSeo = async (uri, locale = "it") => {
                 }
               }
             }
+            featuredImage {
+              node {
+                sourceUrl
+                altText
+                mediaDetails {
+                  width
+                  height
+                }
+              }
+            }
             language {
               code
             }
@@ -61,6 +71,16 @@ export const getSeo = async (uri, locale = "it") => {
                     card
                     title
                     description
+                  }
+                }
+              }
+              featuredImage {
+                node {
+                  sourceUrl
+                  altText
+                  mediaDetails {
+                    width
+                    height
                   }
                 }
               }
@@ -89,6 +109,16 @@ export const getSeo = async (uri, locale = "it") => {
                 }
               }
             }
+            featuredImage {
+              node {
+                sourceUrl
+                altText
+                mediaDetails {
+                  width
+                  height
+                }
+              }
+            }
             language {
               code
             }
@@ -109,6 +139,16 @@ export const getSeo = async (uri, locale = "it") => {
                     card
                     title
                     description
+                  }
+                }
+              }
+              featuredImage {
+                node {
+                  sourceUrl
+                  altText
+                  mediaDetails {
+                    width
+                    height
                   }
                 }
               }
@@ -142,9 +182,26 @@ export const getSeo = async (uri, locale = "it") => {
   const page = data.nodeByUri;
   const pageLanguage = page.language?.code?.toLowerCase();
 
+  const buildResult = (seoData, featuredImage) => {
+    const processed = processSeoUrls(seoData);
+    if (!processed) return null;
+    const img = featuredImage?.node;
+    return {
+      ...processed,
+      featuredImage: img?.sourceUrl
+        ? {
+            url: img.sourceUrl,
+            alt: img.altText || "",
+            width: img.mediaDetails?.width || 1200,
+            height: img.mediaDetails?.height || 630,
+          }
+        : null,
+    };
+  };
+
   // Se la pagina è già nella lingua richiesta
   if (pageLanguage === locale) {
-    return processSeoUrls(page.seo);
+    return buildResult(page.seo, page.featuredImage);
   }
 
   // Cerca tra le traduzioni
@@ -153,9 +210,9 @@ export const getSeo = async (uri, locale = "it") => {
   );
 
   if (translation) {
-    return processSeoUrls(translation.seo);
+    return buildResult(translation.seo, translation.featuredImage ?? page.featuredImage);
   }
 
   // Fallback
-  return processSeoUrls(page.seo);
+  return buildResult(page.seo, page.featuredImage);
 };

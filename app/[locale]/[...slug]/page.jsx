@@ -84,6 +84,10 @@ export async function generateMetadata({ params }) {
     seo = await getSeo(`/${slugPath}/`, locale);
   }
 
+  const ogImages = seo?.featuredImage
+    ? [{ url: seo.featuredImage.url, alt: seo.featuredImage.alt, width: seo.featuredImage.width, height: seo.featuredImage.height }]
+    : [];
+
   return {
     title: seo?.title || "",
     description: seo?.description || "",
@@ -96,11 +100,13 @@ export async function generateMetadata({ params }) {
       title: seo?.openGraph?.title || "",
       description: seo?.openGraph?.description || "",
       url: seo?.openGraph?.url || "",
+      images: ogImages,
     },
     twitter: {
-      card: seo?.openGraph?.twitterMeta?.card || "",
+      card: seo?.openGraph?.twitterMeta?.card || "summary_large_image",
       title: seo?.openGraph?.twitterMeta?.title || "",
       description: seo?.openGraph?.twitterMeta?.description || "",
+      images: ogImages.map((i) => i.url),
     },
   };
 }
