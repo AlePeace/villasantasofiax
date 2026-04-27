@@ -186,11 +186,12 @@ export const getSeo = async (uri, locale = "it") => {
     const processed = processSeoUrls(seoData);
     if (!processed) return null;
     const img = featuredImage?.node;
+    const imageUrl = img?.sourceUrl || null;
     return {
       ...processed,
-      featuredImage: img?.sourceUrl
+      featuredImage: imageUrl
         ? {
-            url: img.sourceUrl,
+            url: imageUrl,
             alt: img.altText || "",
             width: img.mediaDetails?.width || 1200,
             height: img.mediaDetails?.height || 630,
