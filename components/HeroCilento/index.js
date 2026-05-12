@@ -1,0 +1,1 @@
+export { HeroCilento } from "./HeroCilento";

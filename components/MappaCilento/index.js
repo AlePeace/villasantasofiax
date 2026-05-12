@@ -1,0 +1,1 @@
+export { MappaCilento } from "./MappaCilento";

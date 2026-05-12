@@ -1,0 +1,1 @@
+export { HeroPool } from "./HeroPool";
