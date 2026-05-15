@@ -15,13 +15,12 @@ const PlaneIcon = () => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.2"
+    strokeWidth="1.4"
     strokeLinecap="round"
     strokeLinejoin="round"
     className="w-8 h-8 text-blue shrink-0"
   >
-    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.7 10.7 19.79 19.79 0 01.67 2.1 2 2 0 012.65.12h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.09 6.09l.99-.98a2 2 0 012.1-.45 12.84 12.84 0 002.81.7A2 2 0 0122 15.28z" />
-    <line x1="2" y1="12" x2="22" y2="2" />
+    <path d="M16 10h4a2 2 0 0 1 0 4h-4l-4 7h-3l2-7h-4l-2 2H2l2-4-2-4h3l2 2h4l-2-7h3z" />
   </svg>
 );
 
@@ -31,14 +30,16 @@ const CarIcon = () => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.2"
+    strokeWidth="1.4"
     strokeLinecap="round"
     strokeLinejoin="round"
     className="w-8 h-8 text-blue shrink-0"
   >
-    <path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v9a2 2 0 01-2 2h-3" />
-    <circle cx="7.5" cy="17.5" r="2.5" />
-    <circle cx="17.5" cy="17.5" r="2.5" />
+    <path d="M5 17H3v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2" />
+    <path d="M5 11h15M9 11V6" />
+    <circle cx="7" cy="17" r="2" />
+    <circle cx="17" cy="17" r="2" />
+    <path d="M9 17h6" />
   </svg>
 );
 
