@@ -41,6 +41,9 @@ export const SmoothScroll = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    const lenis = lenisRef.current?.lenis;
+    lenis?.scrollTo(0, { immediate: true });
+
     // Piccolo delay per aspettare che il nuovo DOM sia renderizzato
     const timeout = setTimeout(() => {
       ScrollTrigger.refresh();

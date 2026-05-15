@@ -1,7 +1,15 @@
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
 import { Buttons } from "components/Buttons";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export const CilentoHome = ({ blocks }) => {
   const innerBlocks = blocks?.innerBlocks || [];
@@ -16,9 +24,45 @@ export const CilentoHome = ({ blocks }) => {
   const secondImage = allImages[1];
   const firstHeadingCover = allHeadings[1];
   const secondHeadingCover = allHeadings[2];
+  const container = useRef(null);
+
+  useGSAP(
+    () => {
+      const mainHeading = container.current?.querySelector(".cilento-heading");
+      const firstImg = container.current?.querySelector(".cilento-img-first");
+      const para = container.current?.querySelector(".cilento-para");
+      const secondImg = container.current?.querySelector(".cilento-img-second");
+
+      if (mainHeading) {
+        gsap.from(mainHeading, {
+          x: -30, opacity: 0, duration: 1, ease: "power2.out",
+          scrollTrigger: { trigger: container.current, start: "top 75%" },
+        });
+      }
+      if (firstImg) {
+        gsap.from(firstImg, {
+          clipPath: "inset(0 100% 0 0)", duration: 1.3, ease: "power2.inOut",
+          scrollTrigger: { trigger: firstImg, start: "top 80%" },
+        });
+      }
+      if (para) {
+        gsap.from(para, {
+          y: 20, opacity: 0, duration: 0.9, ease: "power2.out",
+          scrollTrigger: { trigger: para, start: "top 85%" },
+        });
+      }
+      if (secondImg) {
+        gsap.from(secondImg, {
+          y: 40, opacity: 0, rotate: -14, duration: 1.1, ease: "power2.out",
+          scrollTrigger: { trigger: secondImg, start: "top 85%" },
+        });
+      }
+    },
+    { scope: container },
+  );
 
   return (
-    <section className="pt-10 lg:pt-36 px-5 lg:px-40 relative z-20">
+    <section ref={container} className="pt-10 lg:pt-36 px-5 lg:px-40 relative z-20">
       <div className="absolute top-0 bottom-0 right-44 h-full">
         <svg
           width="294"
@@ -117,13 +161,13 @@ export const CilentoHome = ({ blocks }) => {
             <Heading
               level={headings.attributes?.level}
               content={headings.attributes?.content}
-              className="font-montecatini font-normal text-5xl lg:text-6xl xl:text-7xl text-peach"
+              className="cilento-heading font-montecatini font-normal text-5xl lg:text-6xl xl:text-7xl text-peach"
             />
           )}
         </div>
         <div className="relative">
           {firstImage && (
-            <div className="aspect-video h-full w-full relative min-h-[400px] flex justify-start items-end overflow-hidden p-5 lg:p-8">
+            <div className="cilento-img-first aspect-video h-full w-full relative min-h-[400px] flex justify-start items-end overflow-hidden p-5 lg:p-8">
               <Image
                 src={firstImage.attributes?.url}
                 alt={firstImage.attributes?.alt || "Cover background"}
@@ -149,7 +193,7 @@ export const CilentoHome = ({ blocks }) => {
             </div>
           )}
           {paragraph && (
-            <div className="p-5 pt-10 lg:p-10 lg:w-3/5">
+            <div className="cilento-para p-5 pt-10 lg:p-10 lg:w-3/5">
               <Paragraph
                 content={paragraph.attributes?.content}
                 className="font-nunito text-base text-gray"
@@ -160,7 +204,7 @@ export const CilentoHome = ({ blocks }) => {
       </div>
       <div className="pt-10 lg:pt-36 relative z-50 overflow-visible">
         {secondImage && (
-          <div className="relative z-30 shadow-2xl bg-white p-5 lg:w-1/2 origin-bottom-right -rotate-12">
+          <div className="cilento-img-second relative z-30 shadow-2xl bg-white p-5 lg:w-1/2 origin-bottom-right -rotate-12">
             <div className="aspect-video h-full w-full relative min-h-[400px] flex justify-end items-end overflow-hidden p-5 lg:p-8">
               <Image
                 src={secondImage.attributes?.url}

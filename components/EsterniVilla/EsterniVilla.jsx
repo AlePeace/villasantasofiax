@@ -1,7 +1,15 @@
+"use client";
+
+import { useRef } from "react";
 import { Buttons } from "components/Buttons";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
 import Image from "next/image";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export const EsterniVilla = ({ blocks }) => {
   const innerBlocks = blocks?.innerBlocks || [];
@@ -16,9 +24,57 @@ export const EsterniVilla = ({ blocks }) => {
   const heading2 = headings[1]; // INTERNI CHE ACCOLGONO
   const para1 = paragraphs[0];
   const para2 = paragraphs[1];
+  const container = useRef(null);
+
+  useGSAP(
+    () => {
+      const h1 = container.current?.querySelector(".esterni-heading1");
+      const h2 = container.current?.querySelector(".esterni-heading2");
+      const p1 = container.current?.querySelector(".esterni-para1");
+      const p2 = container.current?.querySelector(".esterni-para2");
+      const imgs = container.current?.querySelectorAll(".esterni-img");
+
+      if (h1) {
+        gsap.from(h1, {
+          x: -30, opacity: 0, duration: 1, ease: "power2.out",
+          scrollTrigger: { trigger: h1, start: "top 80%" },
+        });
+      }
+      if (p1) {
+        gsap.from(p1, {
+          y: 20, opacity: 0, duration: 0.9, ease: "power2.out",
+          scrollTrigger: { trigger: p1, start: "top 85%" },
+        });
+      }
+      if (h2) {
+        gsap.from(h2, {
+          x: 30, opacity: 0, duration: 1, ease: "power2.out",
+          scrollTrigger: { trigger: h2, start: "top 80%" },
+        });
+      }
+      if (p2) {
+        gsap.from(p2, {
+          y: 20, opacity: 0, duration: 0.9, ease: "power2.out",
+          scrollTrigger: { trigger: p2, start: "top 85%" },
+        });
+      }
+      if (imgs?.length) {
+        imgs.forEach((img) => {
+          gsap.from(img, {
+            clipPath: "inset(0 100% 0 0)",
+            duration: 1.2,
+            ease: "power2.inOut",
+            scrollTrigger: { trigger: img, start: "top 85%" },
+          });
+        });
+      }
+    },
+    { scope: container },
+  );
 
   return (
     <section
+      ref={container}
       className="w-full"
       style={{ background: "linear-gradient(to bottom, #ffffff, #f3eadf)" }}
     >
@@ -45,11 +101,11 @@ export const EsterniVilla = ({ blocks }) => {
               <Heading
                 level={heading1.attributes?.level}
                 content={heading1.attributes?.content}
-                className="font-montecatini text-blue text-4xl lg:text-5xl xl:text-7xl uppercase leading-tight"
+                className="esterni-heading1 font-montecatini text-blue text-4xl lg:text-5xl xl:text-7xl uppercase leading-tight"
               />
             )}
             {para1 && (
-              <div className="pl-7 md:pr-12 lg:pr-40 border-l border-gray/30">
+              <div className="esterni-para1 pl-7 md:pr-12 lg:pr-40 border-l border-gray/30">
                 <Paragraph
                   content={para1.attributes?.content}
                   className="font-nunito text-text text-base lg:text-lg leading-relaxed"
@@ -60,7 +116,7 @@ export const EsterniVilla = ({ blocks }) => {
 
           {/* Right col: tall portrait */}
           {img1 && (
-            <div className="relative w-full lg:self-end lg:p-10">
+            <div className="esterni-img relative w-full lg:self-end lg:p-10">
               <Image
                 src={img1.attributes?.url}
                 alt={img1.attributes?.alt || ""}
@@ -76,7 +132,7 @@ export const EsterniVilla = ({ blocks }) => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-30 items-start">
           {/* Landscape left */}
           {img2 && (
-            <div className="relative w-full">
+            <div className="esterni-img relative w-full">
               <Image
                 src={img3.attributes?.url}
                 alt={img3.attributes?.alt || ""}
@@ -101,7 +157,7 @@ export const EsterniVilla = ({ blocks }) => {
               </div>
             )}
             {para2 && (
-              <div className="pt-10">
+              <div className="esterni-para2 pt-10">
                   <Paragraph
                     content={para2.attributes?.content}
                     className="font-nunito text-text text-base lg:text-lg leading-relaxed"
@@ -132,7 +188,7 @@ export const EsterniVilla = ({ blocks }) => {
                   <Heading
                     level={heading2.attributes?.level}
                     content={heading2.attributes?.content}
-                    className="font-montecatini text-blue text-4xl lg:text-5xl xl:text-7xl uppercase leading-tight"
+                    className="esterni-heading2 font-montecatini text-blue text-4xl lg:text-5xl xl:text-7xl uppercase leading-tight"
                   />
                 )}
               </div>

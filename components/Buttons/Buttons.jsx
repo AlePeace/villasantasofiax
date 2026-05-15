@@ -41,6 +41,10 @@ export const Buttons = ({
       return "relative w-full lg:w-fit px-10 lg:px-20 py-6 lg:py-8 z-10 uppercase bg-blue text-white text-xl lg:text-2xl tracking-[1.92px] font-montecatini font-noraml text-base lg:text-2xl transition-all duration-300 hover:bg-lightblue hover:border-lightblue text-center";
     }
 
+    if (variant === "SpiaggeList") {
+      return "inline-block px-4 py-2 text-[10px] lg:text-xs uppercase tracking-widest font-nunito font-light text-blue border border-blue/40 transition-all duration-300 hover:bg-blue hover:text-white";
+    }
+
     return "px-10 py-4 uppercase rounded-full bg-blue text-yellow font-semibold transition-all duration-300 hover:bg-yellow hover:text-blue";
   };
 
@@ -51,8 +55,8 @@ export const Buttons = ({
           return (
             <Button
               key={block.id || index}
-              url={block.attributes.url}
-              content={block.attributes.content}
+              url={block.attributes?.url}
+              content={block.attributes?.content}
               className={getButtonStyles()}
             />
           );

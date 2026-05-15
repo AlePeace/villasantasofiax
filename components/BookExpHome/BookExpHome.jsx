@@ -1,5 +1,13 @@
+"use client";
+
+import { useRef } from "react";
 import { Buttons } from "components/Buttons";
 import { Heading } from "components/Heading";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export const BookExpHome = ({ blocks }) => {
   const innerBlocks = blocks?.innerBlocks || [];
@@ -8,25 +16,43 @@ export const BookExpHome = ({ blocks }) => {
 
   const title = headings[1];
   const subtitle = headings[0];
+  const container = useRef(null);
+
+  useGSAP(
+    () => {
+      const sub = container.current?.querySelector(".bookexp-subtitle");
+      const ttl = container.current?.querySelector(".bookexp-title");
+      const btn = container.current?.querySelector(".bookexp-btn");
+
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: container.current, start: "top 75%" },
+      });
+
+      if (sub) tl.from(sub, { y: 20, opacity: 0, duration: 0.8, ease: "power2.out" });
+      if (ttl) tl.from(ttl, { y: 30, opacity: 0, duration: 1, ease: "power2.out" }, "-=0.4");
+      if (btn) tl.from(btn, { scale: 0.95, opacity: 0, duration: 0.7, ease: "power2.out" }, "-=0.4");
+    },
+    { scope: container },
+  );
 
   return (
-    <section className="relative z-10 px-5 h-[70vh] bg-lightblue/20 flex flex-col justify-center text-center gap-10">
+    <section ref={container} className="relative z-10 px-5 h-[70vh] bg-lightblue/20 flex flex-col justify-center text-center gap-10">
       {subtitle && (
         <Heading
           level={subtitle.attributes?.level}
           content={subtitle.attributes?.content}
-          className="font-nunito font-normal tracking-widest uppercase text-xs text-gray text-center"
+          className="bookexp-subtitle font-nunito font-normal tracking-widest uppercase text-xs text-gray text-center"
         />
       )}
       {title && (
         <Heading
           level={title.attributes?.level}
           content={title.attributes?.content}
-          className="font-montecatini font-normal text-5xl lg:text-6xl xl:text-7xl text-blue text-center"
+          className="bookexp-title font-montecatini font-normal text-5xl lg:text-6xl xl:text-7xl text-blue text-center"
         />
       )}
       {buttons && (
-      <Buttons blocks={buttons.innerBlocks} className="justify-center relative w-fit mx-auto" variant="BookExp" decoration={ <svg
+      <Buttons blocks={buttons.innerBlocks} className="bookexp-btn justify-center relative w-fit mx-auto" variant="BookExp" decoration={ <svg
                        width="168"
                        height="46"
                        viewBox="0 0 168 46"

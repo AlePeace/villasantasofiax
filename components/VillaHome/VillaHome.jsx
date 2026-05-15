@@ -1,7 +1,15 @@
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
 import { Buttons } from "components/Buttons";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export const VillaHome = ({ blocks }) => {
   const innerBlocks = blocks?.innerBlocks || [];
@@ -18,9 +26,76 @@ export const VillaHome = ({ blocks }) => {
 
   const topHeading = headings[0];
   const bottomHeading = headings[1];
+  const container = useRef(null);
+
+  useGSAP(
+    () => {
+      const topH = container.current?.querySelector(".villa-heading-top");
+      const para = container.current?.querySelector(".villa-para");
+      const bottomH = container.current?.querySelector(".villa-heading-bottom");
+
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: container.current, start: "top 75%" },
+      });
+
+      if (topH) tl.from(topH, { x: -40, opacity: 0, duration: 1, ease: "power2.out" });
+      if (para) tl.from(para, { y: 20, opacity: 0, duration: 0.9, ease: "power2.out" }, "-=0.5");
+
+      if (bottomH) {
+        gsap.from(bottomH, {
+          x: 40,
+          opacity: 0,
+          duration: 1,
+          ease: "power2.out",
+          scrollTrigger: { trigger: bottomH, start: "top 85%" },
+        });
+      }
+
+      const strip = container.current?.querySelector(".villa-img-strip");
+      if (strip) {
+        gsap.from(strip, {
+          clipPath: "inset(0 100% 0 0)",
+          duration: 1.3,
+          ease: "power2.inOut",
+          scrollTrigger: { trigger: strip, start: "top 90%" },
+        });
+      }
+
+      const breakfast = container.current?.querySelector(".villa-img-breakfast");
+      if (breakfast) {
+        gsap.from(breakfast, {
+          clipPath: "inset(0 0 0 100%)",
+          duration: 1.3,
+          ease: "power2.inOut",
+          scrollTrigger: { trigger: breakfast, start: "top 92%" },
+        });
+      }
+
+      const bottom = container.current?.querySelector(".villa-img-bottom");
+      if (bottom) {
+        gsap.from(bottom, {
+          clipPath: "inset(0 0 0 100%)",
+          duration: 1.3,
+          ease: "power2.inOut",
+          scrollTrigger: { trigger: bottom, start: "top 92%" },
+        });
+      }
+
+      const bed = container.current?.querySelector(".villa-img-bed");
+      if (bed) {
+        gsap.from(bed, {
+          clipPath: "inset(0 100% 0 0)",
+          duration: 1.3,
+          ease: "power2.inOut",
+          scrollTrigger: { trigger: bed, start: "top 92%" },
+        });
+      }
+    },
+    { scope: container },
+  );
 
   return (
-    <section className="relative z-20 w-full h-full bg-linear-to-b pt-10 lg:pt-32 px-5 lg:px-40 from-white to-gradientbrown overflow-hidden">
+    <section ref={container} className="relative z-20 w-full h-full bg-linear-to-b pt-10 lg:pt-32 px-5 lg:px-40 from-white to-gradientbrown overflow-hidden">
       <div className="absolute right-0 lg:right-20 xl:right-40 z-0 top-1/4 h-[50%] w-1/2 lg:w-1/3 bg-peach"></div>
       <div className="absolute w-full top-0 left-0 px-10 pt-10 lg:pt-32 flex items-center justify-center">
         <svg
@@ -55,13 +130,13 @@ export const VillaHome = ({ blocks }) => {
           <Heading
             level={topHeading.attributes?.level}
             content={topHeading.attributes?.content}
-            className="font-montecatini font-normal text-5xl lg:text-6xl xl:text-7xl text-blue"
+            className="villa-heading-top font-montecatini font-normal text-5xl lg:text-6xl xl:text-7xl text-blue"
           />
         )}
       </div>
       <div className="relative z-10 w-full flex flex-col lg:flex-row pt-10 lg:pt-20">
         <div className="lg:basis-1/2">
-          <div className="pl-7 md:pr-12 lg:pr-24 border-l border-gray/30">
+          <div className="villa-para pl-7 md:pr-12 lg:pr-24 border-l border-gray/30">
             {paragraph && (
               <Paragraph
                 content={paragraph.attributes?.content}
@@ -71,7 +146,7 @@ export const VillaHome = ({ blocks }) => {
           </div>
         </div>
         <div className="lg:basis-1/2">
-          <div className="relative w-full pt-10 lg:pt-0 lg:-mt-20 flex justify-end">
+          <div className="villa-img-strip relative w-full pt-10 lg:pt-0 lg:-mt-20 flex justify-end">
             <Image
               src={imgStrip.url}
               alt={imgStrip.alt || "Image"}
@@ -80,7 +155,7 @@ export const VillaHome = ({ blocks }) => {
               height={imgStrip.height}
               priority
             />
-            <div className="absolute top-1/2 -translate-x-1/4 lg:-translate-x-20 -translate-y-2/3">
+            <div className="villa-img-main absolute top-1/2 -translate-x-1/4 lg:-translate-x-20 -translate-y-2/3">
               <Image
                 src={imgMain.url}
                 alt={imgMain.alt || "Image"}
@@ -104,7 +179,7 @@ export const VillaHome = ({ blocks }) => {
         </div>
       </div>
       <div className="w-full -ml-5 lg:-ml-40 lg:pt-2">
-        <div className="-mt-[90%] lg:-mt-[70%] xl:-mt-[75%] w-2/3 lg:w-[55%] xl:w-1/2">
+        <div className="villa-img-breakfast -mt-[90%] lg:-mt-[70%] xl:-mt-[75%] w-2/3 lg:w-[55%] xl:w-1/2">
           <Image
             src={imgBreakfast.url}
             alt={imgBreakfast.alt || "Image"}
@@ -117,7 +192,7 @@ export const VillaHome = ({ blocks }) => {
       </div>
       <div className="w-full">
         <div className="pt-10 lg:flex lg:flex-row lg:gap-20">
-          <div className="lg:basis-2/3 xl:basis-1/2">
+          <div className="villa-img-bottom lg:basis-2/3 xl:basis-1/2">
             <Image
               src={imgBottom.url}
               alt={imgBottom.alt || "Image"}
@@ -129,7 +204,7 @@ export const VillaHome = ({ blocks }) => {
           </div>
           <div>
             <div className="lg:-mt-[50%] lg:basis-1/2">
-              <div className="flex justify-end lg:justify-start items-end -mt-[5%]">
+              <div className="villa-img-bed flex justify-end lg:justify-start items-end -mt-[5%]">
                 <Image
                   src={imgBed.url}
                   alt={imgBed.alt || "Image"}
@@ -143,7 +218,7 @@ export const VillaHome = ({ blocks }) => {
                 <Heading
                   level={bottomHeading.attributes?.level}
                   content={bottomHeading.attributes?.content}
-                  className="font-montecatini font-normal text-5xl lg:text-7xl xl:text-8xl text-lightblue mt-10"
+                  className="villa-heading-bottom font-montecatini font-normal text-5xl lg:text-7xl xl:text-8xl text-lightblue mt-10"
                 />
               )}
             </div>

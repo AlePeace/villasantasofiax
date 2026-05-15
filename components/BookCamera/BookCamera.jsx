@@ -1,7 +1,15 @@
+"use client";
+
+import { useRef } from "react";
 import { Buttons } from "components/Buttons";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
 import { Baloo_Paaji_2 } from "next/font/google";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export const BookCamera = ({ blocks }) => {
   const innerBlocks = blocks?.innerBlocks || [];
@@ -11,9 +19,29 @@ export const BookCamera = ({ blocks }) => {
 
   const subtitle = headings[0];
   const title = headings[1];
+  const container = useRef(null);
+
+  useGSAP(
+    () => {
+      const sub = container.current?.querySelector(".bookcam-subtitle");
+      const ttl = container.current?.querySelector(".bookcam-title");
+      const para = container.current?.querySelector(".bookcam-para");
+      const btn = container.current?.querySelector(".bookcam-btn");
+
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: container.current, start: "top 75%" },
+      });
+
+      if (sub) tl.from(sub, { y: 20, opacity: 0, duration: 0.8, ease: "power2.out" });
+      if (ttl) tl.from(ttl, { y: 30, opacity: 0, duration: 1, ease: "power2.out" }, "-=0.4");
+      if (para) tl.from(para, { y: 15, opacity: 0, duration: 0.8, ease: "power2.out" }, "-=0.4");
+      if (btn) tl.from(btn, { scale: 0.95, opacity: 0, duration: 0.7, ease: "power2.out" }, "-=0.3");
+    },
+    { scope: container },
+  );
 
   return (
-    <section className="w-full">
+    <section ref={container} className="w-full">
       <div className="w-full">
         <svg
           width="1324"
@@ -183,7 +211,7 @@ export const BookCamera = ({ blocks }) => {
       </div>
       <div className="px-5 lg:px-32 mx-auto max-w-7xl flex flex-col items-center justify-center gap-10 py-10 lg:py-20">
         {subtitle && (
-          <div>
+          <div className="bookcam-subtitle">
             <Heading
               level={subtitle.attributes?.level}
               content={subtitle.attributes?.content}
@@ -192,7 +220,7 @@ export const BookCamera = ({ blocks }) => {
           </div>
         )}
         {title && (
-          <div>
+          <div className="bookcam-title">
             <Heading
               level={title.attributes?.level}
               content={title.attributes?.content}
@@ -201,14 +229,14 @@ export const BookCamera = ({ blocks }) => {
           </div>
         )}
         {paragraph && (
-          <div>
+          <div className="bookcam-para">
             <Paragraph content={paragraph.attributes?.content} className="font-nunito text-text text-center max-w-3xl" />
           </div>
         )}
         {buttons && (
           <Buttons
             blocks={buttons.innerBlocks}
-            className="justify-center relative"
+            className="bookcam-btn justify-center relative"
             variant="BookExp"
             decoration={ <svg
               width="168"

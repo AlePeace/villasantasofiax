@@ -7,6 +7,11 @@ import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 // es. blocco gruppo con classe "positano" → usa il tema "positano"
 // Le classi Tailwind devono essere stringhe complete per essere rilevate dal JIT
@@ -55,6 +60,7 @@ const getTheme = (group) => {
 
 export const SummaryCamere = ({ blocks }) => {
   const swiperRef = useRef(null);
+  const container = useRef(null);
   const theme = getTheme(blocks);
   const { innerBlocks = [] } = blocks;
 
@@ -65,8 +71,25 @@ export const SummaryCamere = ({ blocks }) => {
   const title = headingBlocks[0]?.attributes || null;
   const subtitle = headingBlocks[1]?.attributes || null;
 
+  useGSAP(
+    () => {
+      const swiper = container.current?.querySelector(".summary-swiper");
+      const ttl = container.current?.querySelector(".summary-title");
+      const sub = container.current?.querySelector(".summary-subtitle");
+
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: container.current, start: "top 75%" },
+      });
+
+      if (swiper) tl.from(swiper, { y: 30, opacity: 0, duration: 1, ease: "power2.out" });
+      if (ttl) tl.from(ttl, { y: 20, opacity: 0, duration: 0.9, ease: "power2.out" }, "-=0.4");
+      if (sub) tl.from(sub, { y: 20, opacity: 0, duration: 0.9, ease: "power2.out" }, "-=0.5");
+    },
+    { scope: container },
+  );
+
   return (
-    <section className="relative">
+    <section ref={container} className="relative">
       <div className="absolute w-full h-full inset-0">
         <svg
           width="803"
@@ -100,7 +123,7 @@ export const SummaryCamere = ({ blocks }) => {
       </div>
       <div className="pb-10 px-5 max-w-7xl mx-auto relative">
         {images.length > 0 && (
-          <div className="relative w-full">
+          <div className="summary-swiper relative w-full">
             <Swiper
               onSwiper={(swiper) => { swiperRef.current = swiper; }}
               modules={[Navigation]}
@@ -149,7 +172,7 @@ export const SummaryCamere = ({ blocks }) => {
             <Heading
               level={title.level}
               content={title.content}
-              className={theme.text + " font-nunito font-light text-base"}
+              className={"summary-title " + theme.text + " font-nunito font-light text-base"}
             />
           )}
           {subtitle && (
@@ -157,7 +180,7 @@ export const SummaryCamere = ({ blocks }) => {
               level={subtitle.level}
               content={subtitle.content}
               className={
-                theme.text +
+                "summary-subtitle " + theme.text +
                 " font-montecatini font-normal text-5xl lg:text-7xl"
               }
             />

@@ -1,5 +1,66 @@
 import { cleanAndTransformBlocks } from "./cleanAndTransformBlocks";
 
+const LOCALES = ["it", "en"];
+
+// Lightweight scan of all pages to find the translation group for a given URI.
+// Used when Polylang doesn't return translations via the primary nodeByUri query.
+const getSupplementalTranslationUris = async (uri) => {
+  const params = {
+    query: `
+      query AllPagesSlugMap {
+        pages(first: 100) {
+          nodes {
+            uri
+            language { code }
+            translations {
+              uri
+              language { code }
+            }
+          }
+        }
+      }
+    `,
+  };
+
+  const response = await fetch(process.env.WP_GRAPHQL_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(params),
+    next: { revalidate: 86400 },
+  });
+
+  const { data } = await response.json();
+  const pages = data?.pages?.nodes || [];
+
+  for (const page of pages) {
+    const allUris = [page.uri, ...(page.translations?.map((t) => t.uri) || [])];
+    if (!allUris.includes(uri)) continue;
+
+    const map = {};
+    const pageLocale = page.language?.code?.toLowerCase();
+    if (pageLocale && page.uri) map[pageLocale] = page.uri;
+    for (const t of page.translations || []) {
+      const tLocale = t.language?.code?.toLowerCase();
+      if (tLocale && t.uri) map[tLocale] = t.uri;
+    }
+    return map;
+  }
+  return null;
+};
+
+// Merges supplemental URI data when Polylang doesn't return all translations
+const enrichTranslationUris = async (uri, existingMap) => {
+  const hasAll = LOCALES.every((loc) => existingMap[loc]);
+  if (hasAll) return existingMap;
+
+  console.log(`[getPage] Translation map incomplete for "${uri}", running supplemental lookup`);
+  const supplement = await getSupplementalTranslationUris(uri);
+  if (!supplement) return existingMap;
+
+  // existingMap takes precedence over supplemental data
+  return { ...supplement, ...existingMap };
+};
+
 // Fallback per WPGraphQL + Polylang: nodeByUri non risolve URI di pagine tradotte.
 // Cerca tra tutte le pagine quella che ha una traduzione con l'URI richiesto.
 export const getPageByTranslationUri = async (uri, locale) => {
@@ -116,7 +177,6 @@ export const getPage = async (uri, locale = "it") => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(params),
-    //cache: "no-store",
     next: { revalidate: 86400 },
   });
 
@@ -167,12 +227,16 @@ export const getPage = async (uri, locale = "it") => {
   if (pageLanguage === locale) {
     console.log(`[getPage] ✅ Page is already in requested locale "${locale}"`);
     const blocks = cleanAndTransformBlocks(page.blocks);
+    const translationUris = await enrichTranslationUris(
+      uri,
+      buildTranslationUris(page, locale, uri),
+    );
     return {
       blocks,
       content: page.content || null,
       title: page.title || null,
       wpSlug: uriToSlug(uri),
-      translationUris: buildTranslationUris(page, locale, uri),
+      translationUris,
     };
   }
 
@@ -185,11 +249,12 @@ export const getPage = async (uri, locale = "it") => {
     console.log(`[getPage] ✅ Found translation in "${locale}": "${translation.title}"`);
     const blocks = cleanAndTransformBlocks(translation.blocks);
     // La pagina trovata è in un'altra lingua: costruiamo la mappa con la pagina base + le sue traduzioni
-    const translationUris = { [pageLanguage]: page.uri };
+    const rawTranslationUris = { [pageLanguage]: page.uri };
     page.translations?.forEach((t) => {
       const code = t.language?.code?.toLowerCase();
-      if (code) translationUris[code] = t.uri;
+      if (code) rawTranslationUris[code] = t.uri;
     });
+    const translationUris = await enrichTranslationUris(uri, rawTranslationUris);
     return {
       blocks,
       content: translation.content || null,
@@ -201,11 +266,15 @@ export const getPage = async (uri, locale = "it") => {
 
   console.log(`[getPage] ⚠️ No translation found for "${locale}", using fallback (${pageLanguage})`);
   const blocks = cleanAndTransformBlocks(page.blocks);
+  const translationUris = await enrichTranslationUris(
+    uri,
+    buildTranslationUris(page, pageLanguage, uri),
+  );
   return {
     blocks,
     content: page.content || null,
     title: page.title || null,
     wpSlug: uriToSlug(uri),
-    translationUris: buildTranslationUris(page, pageLanguage, uri),
+    translationUris,
   };
 };

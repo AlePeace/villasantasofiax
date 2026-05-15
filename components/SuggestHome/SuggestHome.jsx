@@ -1,6 +1,14 @@
+"use client";
+
+import { useRef } from "react";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
 import Image from "next/image";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export const SuggestHome = ({ blocks }) => {
   const innerBlocks = blocks?.innerBlocks || [];
@@ -11,9 +19,29 @@ export const SuggestHome = ({ blocks }) => {
   const images = innerBlocks.filter((block) => block.name === "core/image");
   const firstImage = images[0];
   const secondImage = images[1];
+  const container = useRef(null);
+
+  useGSAP(
+    () => {
+      const heading = container.current?.querySelector(".suggest-heading");
+      const para = container.current?.querySelector(".suggest-para");
+      const imgs = container.current?.querySelectorAll(".suggest-img");
+
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: container.current, start: "top 70%" },
+      });
+
+      if (heading) tl.from(heading, { x: -30, opacity: 0, duration: 1, ease: "power2.out" });
+      if (para) tl.from(para, { y: 20, opacity: 0, duration: 0.9, ease: "power2.out" }, "-=0.5");
+      if (imgs?.length) {
+        tl.from(imgs, { y: 30, opacity: 0, duration: 0.8, stagger: 0.15, ease: "power2.out" }, "-=0.5");
+      }
+    },
+    { scope: container },
+  );
 
   return (
-    <section className="w-full relative pt-20 lg:pt-40 pb-10 lg:pb-20 px-5 lg:px-0 overflow-hidden">
+    <section ref={container} className="w-full relative pt-20 lg:pt-40 pb-10 lg:pb-20 px-5 lg:px-0 overflow-hidden">
       <div className="absolute left-0 top-0 lg:top-14 right-0">
         <svg
           width="1324"
@@ -188,11 +216,11 @@ export const SuggestHome = ({ blocks }) => {
               <Heading
                 level={heading.attributes?.level}
                 content={heading.attributes?.content}
-                className="font-montecatini font-normal text-5xl lg:text-6xl xl:text-7xl text-peach mt-10"
+                className="suggest-heading font-montecatini font-normal text-5xl lg:text-6xl xl:text-7xl text-peach mt-10"
               />
             )}
             {paragraph && (
-              <div className="pl-7 lg:pr-32 border-l border-gray/30">
+              <div className="suggest-para pl-7 lg:pr-32 border-l border-gray/30">
                 <Paragraph
                   content={paragraph?.attributes?.content}
                   className="font-nunito font-light text-gray text-base lg:text-lg xl:text-xl"
@@ -201,7 +229,7 @@ export const SuggestHome = ({ blocks }) => {
             )}
           </div>
           <div className="flex gap-3 lg:gap-5 items-stretch lg:basis-1/2">
-            <div>
+            <div className="suggest-img">
               {firstImage && (
                 <Image
                   src={firstImage.attributes?.url}
@@ -212,7 +240,7 @@ export const SuggestHome = ({ blocks }) => {
                 />
               )}
             </div>
-            <div>
+            <div className="suggest-img">
               {secondImage && (
                 <Image
                   src={secondImage.attributes?.url}
