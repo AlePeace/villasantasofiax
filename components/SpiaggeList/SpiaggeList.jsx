@@ -18,53 +18,69 @@ export const SpiaggeList = ({ blocks }) => {
   const beaches = innerBlocks.filter((b) => b.name === "core/group");
 
   useGSAP(
-    () => {
+    (self) => {
       const splits = [];
-      const items = container.current?.querySelectorAll(".spiaggia-item");
+      let cancelled = false;
 
-      items?.forEach((item, i) => {
-        const isReversed = i % 2 !== 0;
-        const img = item.querySelector(".spiaggia-img");
-        const headingEl = item.querySelector(".spiaggia-heading");
-        const metas = item.querySelectorAll(".spiaggia-meta");
-        const desc = item.querySelector(".spiaggia-desc");
-        const btn = item.querySelector(".spiaggia-btn");
+      const build = self.add(null, () => {
+        if (cancelled || !container.current) return;
+        const items = container.current.querySelectorAll(".spiaggia-item");
 
-        if (img) {
-          gsap.from(img, {
-            clipPath: isReversed ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)",
-            duration: 1.2,
-            ease: "power2.inOut",
-            scrollTrigger: { trigger: item, start: "top 82%" },
-          });
-        }
+        items?.forEach((item, i) => {
+          const isReversed = i % 2 !== 0;
+          const img = item.querySelector(".spiaggia-img");
+          const headingEl = item.querySelector(".spiaggia-heading");
+          const metas = item.querySelectorAll(".spiaggia-meta");
+          const desc = item.querySelector(".spiaggia-desc");
+          const btn = item.querySelector(".spiaggia-btn");
 
-        if (headingEl) {
-          const split = new SplitText(headingEl, { type: "lines", mask: "lines" });
-          splits.push(split);
-          gsap.from(split.lines, {
-            yPercent: 100,
-            duration: 0.8,
-            stagger: 0.07,
-            ease: "power2.out",
-            scrollTrigger: { trigger: headingEl, start: "top 85%" },
-          });
-        }
+          if (img) {
+            gsap.from(img, {
+              clipPath: isReversed ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)",
+              duration: 1.2,
+              ease: "power2.inOut",
+              scrollTrigger: { trigger: item, start: "top 82%" },
+            });
+          }
 
-        const textEls = [...Array.from(metas), desc, btn].filter(Boolean);
-        if (textEls.length) {
-          gsap.from(textEls, {
-            y: 22,
-            opacity: 0,
-            stagger: 0.1,
-            duration: 0.75,
-            ease: "power2.out",
-            scrollTrigger: { trigger: item, start: "top 80%" },
-          });
-        }
+          if (headingEl) {
+            headingEl.style.visibility = "hidden";
+            const split = new SplitText(headingEl, { type: "lines", mask: "lines" });
+            splits.push(split);
+            gsap.from(split.lines, {
+              yPercent: 100,
+              duration: 0.8,
+              stagger: 0.07,
+              ease: "power2.out",
+              scrollTrigger: { trigger: headingEl, start: "top 85%" },
+            });
+            headingEl.style.visibility = "";
+          }
+
+          const textEls = [...Array.from(metas), desc, btn].filter(Boolean);
+          if (textEls.length) {
+            gsap.from(textEls, {
+              y: 22,
+              opacity: 0,
+              stagger: 0.1,
+              duration: 0.75,
+              ease: "power2.out",
+              scrollTrigger: { trigger: item, start: "top 80%" },
+            });
+          }
+        });
+
+        ScrollTrigger.refresh();
       });
 
-      return () => splits.forEach((s) => s.revert());
+      document.fonts.ready.then(() => {
+        if (!cancelled) build();
+      });
+
+      return () => {
+        cancelled = true;
+        splits.forEach((s) => s.revert());
+      };
     },
     { scope: container },
   );

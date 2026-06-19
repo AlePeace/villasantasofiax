@@ -17,51 +17,69 @@ export const RistorantiGuida = ({ blocks }) => {
   const aree = innerBlocks.filter((b) => b.name === "core/group");
 
   useGSAP(
-    () => {
+    (self) => {
       const splits = [];
+      let cancelled = false;
 
-      const titleEl = container.current?.querySelector(".guida-title");
-      if (titleEl) {
-        const split = new SplitText(titleEl, { type: "lines", mask: "lines" });
-        splits.push(split);
-        gsap.from(split.lines, {
-          yPercent: 100,
-          duration: 1,
-          stagger: 0.08,
-          ease: "power2.out",
-          scrollTrigger: { trigger: titleEl, start: "top 80%" },
-        });
-      }
+      const build = self.add(null, () => {
+        if (cancelled || !container.current) return;
 
-      const sections = container.current?.querySelectorAll(".area-section");
-      sections?.forEach((section) => {
-        const areaLabel = section.querySelector(".area-label");
-        const ristoranti = section.querySelectorAll(".ristorante-row");
-
-        if (areaLabel) {
-          const split = new SplitText(areaLabel, { type: "lines", mask: "lines" });
+        const titleEl = container.current.querySelector(".guida-title");
+        if (titleEl) {
+          titleEl.style.visibility = "hidden";
+          const split = new SplitText(titleEl, { type: "lines", mask: "lines" });
           splits.push(split);
           gsap.from(split.lines, {
             yPercent: 100,
-            duration: 0.8,
+            duration: 1,
+            stagger: 0.08,
             ease: "power2.out",
-            scrollTrigger: { trigger: section, start: "top 82%" },
+            scrollTrigger: { trigger: titleEl, start: "top 80%" },
           });
+          titleEl.style.visibility = "";
         }
 
-        if (ristoranti?.length) {
-          gsap.from(ristoranti, {
-            y: 20,
-            opacity: 0,
-            stagger: 0.08,
-            duration: 0.7,
-            ease: "power2.out",
-            scrollTrigger: { trigger: section, start: "top 78%" },
-          });
-        }
+        const sections = container.current.querySelectorAll(".area-section");
+        sections?.forEach((section) => {
+          const areaLabel = section.querySelector(".area-label");
+          const ristoranti = section.querySelectorAll(".ristorante-row");
+
+          if (areaLabel) {
+            areaLabel.style.visibility = "hidden";
+            const split = new SplitText(areaLabel, { type: "lines", mask: "lines" });
+            splits.push(split);
+            gsap.from(split.lines, {
+              yPercent: 100,
+              duration: 0.8,
+              ease: "power2.out",
+              scrollTrigger: { trigger: section, start: "top 82%" },
+            });
+            areaLabel.style.visibility = "";
+          }
+
+          if (ristoranti?.length) {
+            gsap.from(ristoranti, {
+              y: 20,
+              opacity: 0,
+              stagger: 0.08,
+              duration: 0.7,
+              ease: "power2.out",
+              scrollTrigger: { trigger: section, start: "top 78%" },
+            });
+          }
+        });
+
+        ScrollTrigger.refresh();
       });
 
-      return () => splits.forEach((s) => s.revert());
+      document.fonts.ready.then(() => {
+        if (!cancelled) build();
+      });
+
+      return () => {
+        cancelled = true;
+        splits.forEach((s) => s.revert());
+      };
     },
     { scope: container },
   );

@@ -18,54 +18,70 @@ export const LuoghiCultura = ({ blocks }) => {
   const luoghi = innerBlocks.filter((b) => b.name === "core/group");
 
   useGSAP(
-    () => {
+    (self) => {
       const splits = [];
-      const items = container.current?.querySelectorAll(".luogo-item");
+      let cancelled = false;
 
-      items?.forEach((item, i) => {
-        const isReversed = i % 2 !== 0;
-        const img = item.querySelector(".luogo-img");
-        const headingEl = item.querySelector(".luogo-heading");
-        const metas = item.querySelectorAll(".luogo-meta");
-        const desc = item.querySelector(".luogo-desc");
-        const info = item.querySelector(".luogo-info");
-        const btn = item.querySelector(".luogo-btn");
+      const build = self.add(null, () => {
+        if (cancelled || !container.current) return;
+        const items = container.current.querySelectorAll(".luogo-item");
 
-        if (img) {
-          gsap.from(img, {
-            clipPath: isReversed ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)",
-            duration: 1.3,
-            ease: "power2.inOut",
-            scrollTrigger: { trigger: item, start: "top 80%" },
-          });
-        }
+        items?.forEach((item, i) => {
+          const isReversed = i % 2 !== 0;
+          const img = item.querySelector(".luogo-img");
+          const headingEl = item.querySelector(".luogo-heading");
+          const metas = item.querySelectorAll(".luogo-meta");
+          const desc = item.querySelector(".luogo-desc");
+          const info = item.querySelector(".luogo-info");
+          const btn = item.querySelector(".luogo-btn");
 
-        if (headingEl) {
-          const split = new SplitText(headingEl, { type: "lines", mask: "lines" });
-          splits.push(split);
-          gsap.from(split.lines, {
-            yPercent: 100,
-            duration: 0.85,
-            stagger: 0.07,
-            ease: "power2.out",
-            scrollTrigger: { trigger: headingEl, start: "top 85%" },
-          });
-        }
+          if (img) {
+            gsap.from(img, {
+              clipPath: isReversed ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)",
+              duration: 1.3,
+              ease: "power2.inOut",
+              scrollTrigger: { trigger: item, start: "top 80%" },
+            });
+          }
 
-        const textEls = [...Array.from(metas), desc, info, btn].filter(Boolean);
-        if (textEls.length) {
-          gsap.from(textEls, {
-            y: 25,
-            opacity: 0,
-            stagger: 0.1,
-            duration: 0.8,
-            ease: "power2.out",
-            scrollTrigger: { trigger: item, start: "top 78%" },
-          });
-        }
+          if (headingEl) {
+            headingEl.style.visibility = "hidden";
+            const split = new SplitText(headingEl, { type: "lines", mask: "lines" });
+            splits.push(split);
+            gsap.from(split.lines, {
+              yPercent: 100,
+              duration: 0.85,
+              stagger: 0.07,
+              ease: "power2.out",
+              scrollTrigger: { trigger: headingEl, start: "top 85%" },
+            });
+            headingEl.style.visibility = "";
+          }
+
+          const textEls = [...Array.from(metas), desc, info, btn].filter(Boolean);
+          if (textEls.length) {
+            gsap.from(textEls, {
+              y: 25,
+              opacity: 0,
+              stagger: 0.1,
+              duration: 0.8,
+              ease: "power2.out",
+              scrollTrigger: { trigger: item, start: "top 78%" },
+            });
+          }
+        });
+
+        ScrollTrigger.refresh();
       });
 
-      return () => splits.forEach((s) => s.revert());
+      document.fonts.ready.then(() => {
+        if (!cancelled) build();
+      });
+
+      return () => {
+        cancelled = true;
+        splits.forEach((s) => s.revert());
+      };
     },
     { scope: container },
   );

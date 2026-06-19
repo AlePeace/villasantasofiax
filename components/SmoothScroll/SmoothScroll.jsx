@@ -24,8 +24,18 @@ export const SmoothScroll = ({ children }) => {
     gsap.ticker.add(update);
     gsap.ticker.lagSmoothing(0);
 
+    // Ricalcola le posizioni di ScrollTrigger dopo che tutte le risorse
+    // (immagini incluse) sono caricate al primo load della pagina.
+    const onLoad = () => ScrollTrigger.refresh();
+    if (document.readyState === "complete") {
+      ScrollTrigger.refresh();
+    } else {
+      window.addEventListener("load", onLoad, { once: true });
+    }
+
     return () => {
       gsap.ticker.remove(update);
+      window.removeEventListener("load", onLoad);
     };
   }, []);
 

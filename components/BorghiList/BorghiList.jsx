@@ -17,52 +17,68 @@ export const BorghiList = ({ blocks }) => {
   const borghi = innerBlocks.filter((b) => b.name === "core/group");
 
   useGSAP(
-    () => {
+    (self) => {
       const splits = [];
-      const cards = container.current?.querySelectorAll(".cartolina");
+      let cancelled = false;
 
-      if (cards?.length) {
-        gsap.from(cards, {
-          y: 80,
-          opacity: 0,
-          stagger: 0.2,
-          duration: 1,
-          ease: "power2.out",
-          scrollTrigger: { trigger: container.current, start: "top 78%" },
-        });
-      }
+      const build = self.add(null, () => {
+        if (cancelled || !container.current) return;
+        const cards = container.current.querySelectorAll(".cartolina");
 
-      cards?.forEach((card) => {
-        const headingEl = card.querySelector(".cartolina-heading");
-        const metas = card.querySelectorAll(".cartolina-meta");
-        const desc = card.querySelector(".cartolina-desc");
-
-        if (headingEl) {
-          const split = new SplitText(headingEl, { type: "lines", mask: "lines" });
-          splits.push(split);
-          gsap.from(split.lines, {
-            yPercent: 100,
-            duration: 0.85,
-            stagger: 0.07,
-            ease: "power2.out",
-            scrollTrigger: { trigger: card, start: "top 75%" },
-          });
-        }
-
-        const textEls = [...Array.from(metas), desc].filter(Boolean);
-        if (textEls.length) {
-          gsap.from(textEls, {
-            y: 16,
+        if (cards?.length) {
+          gsap.from(cards, {
+            y: 80,
             opacity: 0,
-            stagger: 0.1,
-            duration: 0.7,
+            stagger: 0.2,
+            duration: 1,
             ease: "power2.out",
-            scrollTrigger: { trigger: card, start: "top 72%" },
+            scrollTrigger: { trigger: container.current, start: "top 78%" },
           });
         }
+
+        cards?.forEach((card) => {
+          const headingEl = card.querySelector(".cartolina-heading");
+          const metas = card.querySelectorAll(".cartolina-meta");
+          const desc = card.querySelector(".cartolina-desc");
+
+          if (headingEl) {
+            headingEl.style.visibility = "hidden";
+            const split = new SplitText(headingEl, { type: "lines", mask: "lines" });
+            splits.push(split);
+            gsap.from(split.lines, {
+              yPercent: 100,
+              duration: 0.85,
+              stagger: 0.07,
+              ease: "power2.out",
+              scrollTrigger: { trigger: card, start: "top 75%" },
+            });
+            headingEl.style.visibility = "";
+          }
+
+          const textEls = [...Array.from(metas), desc].filter(Boolean);
+          if (textEls.length) {
+            gsap.from(textEls, {
+              y: 16,
+              opacity: 0,
+              stagger: 0.1,
+              duration: 0.7,
+              ease: "power2.out",
+              scrollTrigger: { trigger: card, start: "top 72%" },
+            });
+          }
+        });
+
+        ScrollTrigger.refresh();
       });
 
-      return () => splits.forEach((s) => s.revert());
+      document.fonts.ready.then(() => {
+        if (!cancelled) build();
+      });
+
+      return () => {
+        cancelled = true;
+        splits.forEach((s) => s.revert());
+      };
     },
     { scope: container },
   );

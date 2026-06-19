@@ -1,11 +1,31 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useLayoutEffect } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLenis } from "lenis/react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Template({ children }) {
   const el = useRef(null);
+  const lenis = useLenis();
+
+  // Runs once per mount (= once per navigation, since template.jsx remounts on every route change).
+  // Executes after children's useLayoutEffect (where useGSAP creates ScrollTriggers) but
+  // before the browser paints — so the user never sees the wrongly-triggered state.
+  useLayoutEffect(() => {
+    // Reset Lenis scroll position to top
+    lenis?.scrollTo(0, { immediate: true });
+
+    // Reset any ScrollTrigger animations that fired incorrectly due to stale scroll position
+    ScrollTrigger.getAll().forEach((st) => {
+      st.animation?.progress(0).pause();
+    });
+
+    ScrollTrigger.refresh();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useGSAP(
     () => {

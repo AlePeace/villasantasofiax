@@ -16,41 +16,57 @@ export const ServiziList = ({ blocks }) => {
   const servizi = innerBlocks.filter((b) => b.name === "core/group");
 
   useGSAP(
-    () => {
+    (self) => {
       const splits = [];
-      const rows = container.current?.querySelectorAll(".servizio-row");
+      let cancelled = false;
 
-      rows?.forEach((row) => {
-        const number = row.querySelector(".servizio-number");
-        const headingEl = row.querySelector(".servizio-heading");
-        const text = row.querySelector(".servizio-text");
+      const build = self.add(null, () => {
+        if (cancelled || !container.current) return;
+        const rows = container.current.querySelectorAll(".servizio-row");
 
-        if (headingEl) {
-          const split = new SplitText(headingEl, { type: "lines", mask: "lines" });
-          splits.push(split);
-          gsap.from(split.lines, {
-            yPercent: 100,
-            duration: 0.9,
-            stagger: 0.07,
-            ease: "power2.out",
-            scrollTrigger: { trigger: row, start: "top 78%" },
-          });
-        }
+        rows?.forEach((row) => {
+          const number = row.querySelector(".servizio-number");
+          const headingEl = row.querySelector(".servizio-heading");
+          const text = row.querySelector(".servizio-text");
 
-        const fadeEls = [number, text].filter(Boolean);
-        if (fadeEls.length) {
-          gsap.from(fadeEls, {
-            y: 16,
-            opacity: 0,
-            stagger: 0.1,
-            duration: 0.7,
-            ease: "power2.out",
-            scrollTrigger: { trigger: row, start: "top 76%" },
-          });
-        }
+          if (headingEl) {
+            headingEl.style.visibility = "hidden";
+            const split = new SplitText(headingEl, { type: "lines", mask: "lines" });
+            splits.push(split);
+            gsap.from(split.lines, {
+              yPercent: 100,
+              duration: 0.9,
+              stagger: 0.07,
+              ease: "power2.out",
+              scrollTrigger: { trigger: row, start: "top 78%" },
+            });
+            headingEl.style.visibility = "";
+          }
+
+          const fadeEls = [number, text].filter(Boolean);
+          if (fadeEls.length) {
+            gsap.from(fadeEls, {
+              y: 16,
+              opacity: 0,
+              stagger: 0.1,
+              duration: 0.7,
+              ease: "power2.out",
+              scrollTrigger: { trigger: row, start: "top 76%" },
+            });
+          }
+        });
+
+        ScrollTrigger.refresh();
       });
 
-      return () => splits.forEach((s) => s.revert());
+      document.fonts.ready.then(() => {
+        if (!cancelled) build();
+      });
+
+      return () => {
+        cancelled = true;
+        splits.forEach((s) => s.revert());
+      };
     },
     { scope: container },
   );
