@@ -27,8 +27,16 @@ async function getAllPosts() {
     `,
   };
 
-  const { data } = await fetchGraphQL(params, { next: { revalidate: 86400 } });
-  return data?.posts?.nodes || [];
+  try {
+    const { data } = await fetchGraphQL(params, {
+      next: { revalidate: 86400 },
+    });
+    return data?.posts?.nodes || [];
+  } catch (err) {
+    // Backend SiteGround instabile: non far abortire il build per la sitemap.
+    console.error("[sitemap] getAllPosts fallito, uso fallback vuoto:", err);
+    return [];
+  }
 }
 
 async function getAllPages() {
@@ -55,8 +63,16 @@ async function getAllPages() {
     `,
   };
 
-  const { data } = await fetchGraphQL(params, { next: { revalidate: 86400 } });
-  return data?.pages?.nodes || [];
+  try {
+    const { data } = await fetchGraphQL(params, {
+      next: { revalidate: 86400 },
+    });
+    return data?.pages?.nodes || [];
+  } catch (err) {
+    // Backend SiteGround instabile: non far abortire il build per la sitemap.
+    console.error("[sitemap] getAllPages fallito, uso fallback vuoto:", err);
+    return [];
+  }
 }
 
 function uriToUrl(uri) {
@@ -69,6 +85,7 @@ export default async function sitemap() {
   const [pages, posts] = await Promise.all([getAllPages(), getAllPosts()]);
   const entries = [];
   const seenUris = new Set();
+  const seenUrls = new Set();
 
   for (const page of pages) {
     const lang = page.language?.code?.toLowerCase();
@@ -77,8 +94,10 @@ export default async function sitemap() {
     if (lang !== "it" || seenUris.has(page.uri)) continue;
 
     seenUris.add(page.uri);
+    const pageUrl = uriToUrl(page.uri);
+    seenUrls.add(pageUrl);
     entries.push({
-      url: uriToUrl(page.uri),
+      url: pageUrl,
       lastModified: new Date(page.modified),
       changeFrequency: "monthly",
       priority: page.uri === "/" ? 1.0 : 0.8,
@@ -121,6 +140,23 @@ export default async function sitemap() {
         priority: 0.6,
       });
     }
+  }
+
+  // Fallback: garantisci sempre le homepage IT/EN nella sitemap, anche se
+  // WordPress era irraggiungibile durante il build (sitemap mai vuota/invalida).
+  const fallbackUrls = [
+    { url: SITE_URL, priority: 1.0 },
+    { url: `${SITE_URL}/en`, priority: 0.7 },
+  ];
+  for (const { url, priority } of fallbackUrls) {
+    if (seenUrls.has(url)) continue;
+    seenUrls.add(url);
+    entries.push({
+      url,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority,
+    });
   }
 
   return entries;
