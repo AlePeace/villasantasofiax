@@ -1,4 +1,5 @@
 import { cleanAndTransformBlocks } from "./cleanAndTransformBlocks";
+import { fetchGraphQL } from "./fetchGraphQL";
 
 // Recupera il blocco Footer dalla homepage per riusarlo negli articoli
 export const getFooter = async () => {
@@ -14,15 +15,7 @@ export const getFooter = async () => {
     `,
   };
 
-  const response = await fetch(process.env.WP_GRAPHQL_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(params),
-    //cache: "no-store",
-    next: { revalidate: 86400 },
-  });
-
-  const { data } = await response.json();
+  const { data } = await fetchGraphQL(params, { next: { revalidate: 86400 } });
 
   const blocks = cleanAndTransformBlocks(data?.nodeByUri?.blocks || []);
 

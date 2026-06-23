@@ -1,3 +1,5 @@
+import { fetchGraphQL } from "./fetchGraphQL";
+
 export const getMediaItem = async (id) => {
   if (!id) return null;
 
@@ -15,15 +17,7 @@ export const getMediaItem = async (id) => {
     }
   `;
 
-  const res = await fetch(process.env.WP_GRAPHQL_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query }),
-    //cache: "no-store",
-    next: { revalidate: 86400 },
-  });
-
-  const json = await res.json();
+  const json = await fetchGraphQL({ query }, { next: { revalidate: 86400 } });
   console.log(
     `[getMediaItem] id=${id}`,
     JSON.stringify(json?.data ?? json?.errors),

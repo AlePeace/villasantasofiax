@@ -1,3 +1,5 @@
+import { fetchGraphQL } from "./fetchGraphQL";
+
 const MENU_BG_IMAGE_ID = 31; // ← metti qui il tuo ID
 
 export const getMenuBgImage = async () => {
@@ -16,14 +18,6 @@ export const getMenuBgImage = async () => {
     }
   `;
 
-  const res = await fetch(process.env.WP_GRAPHQL_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query }),
-    //cache: "no-store",
-    next: { revalidate: 86400 },
-  });
-
-  const json = await res.json();
+  const json = await fetchGraphQL({ query }, { next: { revalidate: 86400 } });
   return json?.data?.mediaItem || null;
 };

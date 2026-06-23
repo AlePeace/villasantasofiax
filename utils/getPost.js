@@ -1,4 +1,5 @@
 import { cleanAndTransformBlocks } from "./cleanAndTransformBlocks";
+import { fetchGraphQL } from "./fetchGraphQL";
 
 export const getPost = async (uri, locale = "it") => {
   console.log(`[getPost] Fetching URI: "${uri}", locale: "${locale}"`);
@@ -41,14 +42,7 @@ export const getPost = async (uri, locale = "it") => {
     variables: { uri },
   };
 
-  const response = await fetch(process.env.WP_GRAPHQL_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(params),
-    cache: "no-store",
-  });
-
-  const { data, errors } = await response.json();
+  const { data, errors } = await fetchGraphQL(params, { cache: "no-store" });
 
   if (errors) {
     console.error("[getPost] GraphQL errors:", JSON.stringify(errors, null, 2));

@@ -1,3 +1,5 @@
+import { fetchGraphQL } from "./fetchGraphQL";
+
 const processSeoUrls = (seo) => {
   if (!seo) return seo;
   const wpUrl = process.env.NEXT_PUBLIC_WP_URL || "";
@@ -163,17 +165,7 @@ export const getSeo = async (uri, locale = "it") => {
     variables: { uri },
   };
 
-  const response = await fetch(process.env.WP_GRAPHQL_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(params),
-    //cache: "no-store",
-    next: { revalidate: 86400 },
-  });
-
-  const { data } = await response.json();
+  const { data } = await fetchGraphQL(params, { next: { revalidate: 86400 } });
 
   if (!data?.nodeByUri) {
     return null;

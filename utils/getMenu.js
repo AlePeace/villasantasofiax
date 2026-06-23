@@ -1,3 +1,5 @@
+import { fetchGraphQL } from "./fetchGraphQL";
+
 export const getMenu = async (locale = "it") => {
   console.log(`[getMenu] Fetching menu for locale: "${locale}"`);
 
@@ -30,15 +32,10 @@ export const getMenu = async (locale = "it") => {
     }
   `;
 
-  const res = await fetch(process.env.WP_GRAPHQL_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query, variables: { language: locale } }),
-    //cache: "no-store",
-    next: { revalidate: 86400 },
-  });
-
-  const json = await res.json();
+  const json = await fetchGraphQL(
+    { query, variables: { language: locale } },
+    { next: { revalidate: 86400 } },
+  );
   const nodes = json?.data?.menus?.nodes || [];
 
   console.log(`[getMenu] Found ${nodes.length} menus for locale "${locale}"`);

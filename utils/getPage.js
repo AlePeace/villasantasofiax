@@ -1,4 +1,5 @@
 import { cleanAndTransformBlocks } from "./cleanAndTransformBlocks";
+import { fetchGraphQL } from "./fetchGraphQL";
 
 const LOCALES = ["it", "en"];
 
@@ -22,14 +23,7 @@ const getSupplementalTranslationUris = async (uri) => {
     `,
   };
 
-  const response = await fetch(process.env.WP_GRAPHQL_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(params),
-    next: { revalidate: 86400 },
-  });
-
-  const { data } = await response.json();
+  const { data } = await fetchGraphQL(params, { next: { revalidate: 86400 } });
   const pages = data?.pages?.nodes || [];
 
   for (const page of pages) {
@@ -90,14 +84,7 @@ export const getPageByTranslationUri = async (uri, locale) => {
     `,
   };
 
-  const response = await fetch(process.env.WP_GRAPHQL_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(params),
-    next: { revalidate: 86400 },
-  });
-
-  const { data } = await response.json();
+  const { data } = await fetchGraphQL(params, { next: { revalidate: 86400 } });
   const pages = data?.pages?.nodes || [];
 
   // Cerca la pagina IT che ha una traduzione con l'uri richiesto
@@ -171,16 +158,7 @@ export const getPage = async (uri, locale = "it") => {
     variables: { uri },
   };
 
-  const response = await fetch(process.env.WP_GRAPHQL_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(params),
-    next: { revalidate: 86400 },
-  });
-
-  const { data, errors } = await response.json();
+  const { data, errors } = await fetchGraphQL(params, { next: { revalidate: 86400 } });
 
   if (errors) {
     console.error(`[getPage] GraphQL errors:`, JSON.stringify(errors, null, 2));

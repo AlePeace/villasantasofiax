@@ -1,3 +1,5 @@
+import { fetchGraphQL } from "utils/fetchGraphQL";
+
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://villasantasofia.it";
 
@@ -25,14 +27,7 @@ async function getAllPosts() {
     `,
   };
 
-  const response = await fetch(process.env.WP_GRAPHQL_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(params),
-    next: { revalidate: 86400 },
-  });
-
-  const { data } = await response.json();
+  const { data } = await fetchGraphQL(params, { next: { revalidate: 86400 } });
   return data?.posts?.nodes || [];
 }
 
@@ -60,14 +55,7 @@ async function getAllPages() {
     `,
   };
 
-  const response = await fetch(process.env.WP_GRAPHQL_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(params),
-    next: { revalidate: 86400 },
-  });
-
-  const { data } = await response.json();
+  const { data } = await fetchGraphQL(params, { next: { revalidate: 86400 } });
   return data?.pages?.nodes || [];
 }
 

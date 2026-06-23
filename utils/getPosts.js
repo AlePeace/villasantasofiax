@@ -1,3 +1,5 @@
+import { fetchGraphQL } from "./fetchGraphQL";
+
 export const getPosts = async (locale = "it") => {
   const params = {
     query: `
@@ -55,15 +57,7 @@ export const getPosts = async (locale = "it") => {
     `,
   };
 
-  const response = await fetch(process.env.WP_GRAPHQL_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(params),
-    //cache: "no-store",
-    next: { revalidate: 86400 },
-  });
-
-  const { data, errors } = await response.json();
+  const { data, errors } = await fetchGraphQL(params, { next: { revalidate: 86400 } });
 
   if (errors) {
     console.error(

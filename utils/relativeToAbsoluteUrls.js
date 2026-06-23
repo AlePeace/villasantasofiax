@@ -1,6 +1,15 @@
 export const relativeToAbsoluteUrls = (htmlString = "") => {
-  let result = htmlString.split(process.env.NEXT_PUBLIC_WP_URL).join("");
-  // Rimuovi prefissi lingua WPML dagli URL interni (/en/, /it/, ecc.)
-  // Questi verranno gestiti dal routing next-intl
+  const wpUrl = process.env.NEXT_PUBLIC_WP_URL;
+  if (!wpUrl) return htmlString;
+
+  // Rende relativi gli URL interni del backend WordPress (link a pagine),
+  // così vengono gestiti dal routing next-intl.
+  let result = htmlString.split(wpUrl).join("");
+
+  // ...MA i file dei media (PDF, immagini, upload) vivono fisicamente sul
+  // backend: i loro URL devono restare ASSOLUTI verso wp.villasantasofia.it,
+  // altrimenti puntano al dominio frontend e danno 404.
+  result = result.split("/wp-content/").join(`${wpUrl}/wp-content/`);
+
   return result;
 };
