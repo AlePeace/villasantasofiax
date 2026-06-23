@@ -44,7 +44,16 @@ export const MainMenu = ({
     );
 
     // Set iniziale sui container — mai sui singoli <a>
-    gsap.set(overlayRef.current, { clipPath: "inset(0 0 100% 0)", opacity: 1 });
+    // Promuoviamo l'overlay a layer GPU dedicato: su Firefox Android il
+    // clip-path animato veniva ridipinto ogni frame (lag/glitch "a scatti").
+    // Con will-change + translateZ(0) il clip diventa composito e fluido.
+    gsap.set(overlayRef.current, {
+      clipPath: "inset(0 0 100% 0)",
+      WebkitClipPath: "inset(0 0 100% 0)",
+      opacity: 1,
+      willChange: "clip-path",
+      force3D: true,
+    });
     gsap.set([logoRef.current, navWrapRef.current, footerRef.current], {
       opacity: 0,
       y: 24,
@@ -56,8 +65,9 @@ export const MainMenu = ({
       // 1. Overlay slide-in
       .to(overlayRef.current, {
         clipPath: "inset(0 0 0% 0)",
+        WebkitClipPath: "inset(0 0 0% 0)",
         duration: 0.9,
-        ease: "power4.inOut",
+        ease: "power3.inOut",
       })
       // 2. Logo + nav + footer — stesso timing, stesso ease
       .to(

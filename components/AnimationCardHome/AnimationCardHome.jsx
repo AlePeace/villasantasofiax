@@ -18,6 +18,27 @@ const fallbackPalette = [
   { bg: "#00ABD5", text: "#FFFFFF" },
 ];
 
+// Cerca ricorsivamente il primo href in qualsiasi blocco della card
+// (heading con <a>, core/button con attributes.url, ecc.). Necessario perché
+// l'href non è sempre dentro headings[2].
+const findHrefInBlocks = (blocks = []) => {
+  for (const b of blocks) {
+    const content = b?.attributes?.content;
+    if (typeof content === "string") {
+      const m = content.match(/href=["']([^"']+)["']/);
+      if (m) return m[1];
+    }
+    if (b?.name === "core/button" && b?.attributes?.url) {
+      return b.attributes.url;
+    }
+    if (b?.innerBlocks?.length) {
+      const nested = findHrefInBlocks(b.innerBlocks);
+      if (nested) return nested;
+    }
+  }
+  return null;
+};
+
 const parseCardFromGroup = (group, index) => {
   const { innerBlocks = [] } = group;
 
@@ -26,7 +47,9 @@ const parseCardFromGroup = (group, index) => {
   const paragraph = innerBlocks.find((b) => b.name === "core/paragraph");
   const linkBlock = headings[2];
   const rawLinkHref =
-    linkBlock?.attributes?.content?.match(/href="([^"]+)"/)?.[1] || null;
+    linkBlock?.attributes?.content?.match(/href=["']([^"']+)["']/)?.[1] ||
+    findHrefInBlocks(innerBlocks) ||
+    null;
   const linkHref = rawLinkHref ? relativeToAbsoluteUrls(rawLinkHref) : null;
 
   const colors = fallbackPalette[index % fallbackPalette.length];
@@ -234,6 +257,7 @@ export const AnimationCardHome = ({ blocks }) => {
                         level={card.title.attributes?.level}
                         content={card.title.attributes?.content}
                         className="font-montecatini font-normal text-6xl xl:text-7xl"
+                        stripLinks
                       />
                     )}
 
@@ -241,6 +265,7 @@ export const AnimationCardHome = ({ blocks }) => {
                       <Paragraph
                         content={card.paragraph.attributes?.content}
                         className="font-nunito font-light text-base xl:text-lg"
+                        stripLinks
                       />
                     )}
 
@@ -250,6 +275,7 @@ export const AnimationCardHome = ({ blocks }) => {
                       level={card.subtitle.attributes?.level}
                       content={card.subtitle.attributes?.content}
                       className="mx-auto rounded-[14px] w-full lg:w-fit px-10 lg:px-20 py-6 lg:py-8 z-10 uppercase text-white text-xl lg:text-2xl tracking-[1.92px] font-montecatini font-noraml text-base lg:text-2xl transition-all duration-300 text-center"
+                      stripLinks
                       />
                       <div className="absolute inset-2 pointer-events-none">
                       <svg
@@ -275,6 +301,7 @@ export const AnimationCardHome = ({ blocks }) => {
                         level={card.link.attributes?.level}
                         content={card.link.attributes?.content}
                         className="font-montecatini uppercase text-9xl xl:text-xl"
+                        stripLinks
                       />
                     )}
                   </div>
@@ -322,12 +349,14 @@ export const AnimationCardHome = ({ blocks }) => {
                     level={card.title.attributes?.level}
                     content={card.title.attributes?.content}
                     className="font-montecatini font-normal text-4xl"
+                    stripLinks
                   />
                 )}
                 {card.paragraph && (
                   <Paragraph
                     content={card.paragraph.attributes?.content}
                     className="font-nunito font-light text-base"
+                    stripLinks
                   />
                 )}
                 {card.subtitle && (
@@ -336,6 +365,7 @@ export const AnimationCardHome = ({ blocks }) => {
                   level={card.subtitle.attributes?.level}
                   content={card.subtitle.attributes?.content}
                   className="mx-auto rounded-[14px] w-full lg:w-fit px-10 lg:px-20 py-6 lg:py-8 z-10 uppercase text-white text-xl lg:text-2xl tracking-[1.92px] font-montecatini font-noraml text-base lg:text-2xl transition-all duration-300 text-center"
+                  stripLinks
                   />
                   <div className="absolute inset-2 pointer-events-none">
                   <svg

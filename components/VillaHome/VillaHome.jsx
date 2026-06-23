@@ -30,6 +30,13 @@ export const VillaHome = ({ blocks }) => {
 
   useGSAP(
     () => {
+      // Rispetta le preferenze di riduzione movimento: niente animazioni,
+      // contenuto subito visibile (nessun rischio di glitch).
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      if (prefersReduced) return;
+
       const topH = container.current?.querySelector(".villa-heading-top");
       const para = container.current?.querySelector(".villa-para");
       const bottomH = container.current?.querySelector(".villa-heading-bottom");
@@ -47,49 +54,31 @@ export const VillaHome = ({ blocks }) => {
           opacity: 0,
           duration: 1,
           ease: "power2.out",
-          scrollTrigger: { trigger: bottomH, start: "top 85%" },
+          scrollTrigger: { trigger: bottomH, start: "top 85%", once: true },
         });
       }
 
-      const strip = container.current?.querySelector(".villa-img-strip");
-      if (strip) {
-        gsap.from(strip, {
-          clipPath: "inset(0 100% 0 0)",
-          duration: 1.3,
-          ease: "power2.inOut",
-          scrollTrigger: { trigger: strip, start: "top 90%" },
+      // Reveal fade + slide direzionale: usa solo opacity + transform, che i
+      // browser compositano nativamente sulla GPU (Firefox Android incluso) →
+      // niente repaint per-frame del clip-path, quindi niente glitch/scatti.
+      // L'offset x mantiene la direzione del vecchio reveal (sinistra/destra).
+      const revealFade = (selector, x, start) => {
+        const el = container.current?.querySelector(selector);
+        if (!el) return;
+        gsap.from(el, {
+          opacity: 0,
+          x,
+          duration: 1.1,
+          ease: "power2.out",
+          force3D: true,
+          scrollTrigger: { trigger: el, start, once: true },
         });
-      }
+      };
 
-      const breakfast = container.current?.querySelector(".villa-img-breakfast");
-      if (breakfast) {
-        gsap.from(breakfast, {
-          clipPath: "inset(0 0 0 100%)",
-          duration: 1.3,
-          ease: "power2.inOut",
-          scrollTrigger: { trigger: breakfast, start: "top 92%" },
-        });
-      }
-
-      const bottom = container.current?.querySelector(".villa-img-bottom");
-      if (bottom) {
-        gsap.from(bottom, {
-          clipPath: "inset(0 0 0 100%)",
-          duration: 1.3,
-          ease: "power2.inOut",
-          scrollTrigger: { trigger: bottom, start: "top 92%" },
-        });
-      }
-
-      const bed = container.current?.querySelector(".villa-img-bed");
-      if (bed) {
-        gsap.from(bed, {
-          clipPath: "inset(0 100% 0 0)",
-          duration: 1.3,
-          ease: "power2.inOut",
-          scrollTrigger: { trigger: bed, start: "top 92%" },
-        });
-      }
+      revealFade(".villa-img-strip", -40, "top 90%");
+      revealFade(".villa-img-breakfast", 40, "top 92%");
+      revealFade(".villa-img-bottom", 40, "top 92%");
+      revealFade(".villa-img-bed", -40, "top 92%");
     },
     { scope: container },
   );
@@ -150,7 +139,7 @@ export const VillaHome = ({ blocks }) => {
             <Image
               src={imgStrip.url}
               alt={imgStrip.alt || "Image"}
-              className={`object-cover w-[${imgStrip.width}px] h-[${imgStrip.height}px] aspect-[${imgStrip.width}/${imgStrip.height}] scale-[60%] lg:scale-75 origin-top-right translate-x-5 lg:translate-x-40 pointer-events-none will-change-transform`}
+              className={`object-cover w-[${imgStrip.width}px] h-[${imgStrip.height}px] aspect-[${imgStrip.width}/${imgStrip.height}] scale-[60%] lg:scale-75 origin-top-right translate-x-5 lg:translate-x-40 pointer-events-none transform-gpu backface-hidden`}
               width={imgStrip.width}
               height={imgStrip.height}
               priority
@@ -159,7 +148,7 @@ export const VillaHome = ({ blocks }) => {
               <Image
                 src={imgMain.url}
                 alt={imgMain.alt || "Image"}
-                className={`object-cover w-[${imgMain.width}px] h-[${imgMain.height}px] aspect-[${imgMain.width}/${imgMain.height}] scale-75 origin-top-right pointer-events-none will-change-transform`}
+                className={`object-cover w-[${imgMain.width}px] h-[${imgMain.height}px] aspect-[${imgMain.width}/${imgMain.height}] scale-75 origin-top-right pointer-events-none transform-gpu backface-hidden`}
                 width={imgMain.width}
                 height={imgMain.height}
                 priority
@@ -183,7 +172,7 @@ export const VillaHome = ({ blocks }) => {
           <Image
             src={imgBreakfast.url}
             alt={imgBreakfast.alt || "Image"}
-            className={`object-cover lg:w-full w-[${imgBreakfast.width}px] h-[${imgBreakfast.height}px] aspect-[${imgBreakfast.width}/${imgBreakfast.height}] pointer-events-none will-change-transform`}
+            className={`object-cover lg:w-full w-[${imgBreakfast.width}px] h-[${imgBreakfast.height}px] aspect-[${imgBreakfast.width}/${imgBreakfast.height}] pointer-events-none transform-gpu backface-hidden`}
             width={imgBreakfast.width}
             height={imgBreakfast.height}
             priority
@@ -196,7 +185,7 @@ export const VillaHome = ({ blocks }) => {
             <Image
               src={imgBottom.url}
               alt={imgBottom.alt || "Image"}
-              className={`object-cover w-2/3 lg:w-full lg:w-[${imgBottom.width}px] lg:h-[${imgBottom.height}px] aspect-[${imgBottom.width}/${imgBottom.height}] pointer-events-none will-change-transform lg:translate-y-[57%] xl:translate-y-20`}
+              className={`object-cover w-2/3 lg:w-full lg:w-[${imgBottom.width}px] lg:h-[${imgBottom.height}px] aspect-[${imgBottom.width}/${imgBottom.height}] pointer-events-none lg:translate-y-[57%] xl:translate-y-20 transform-gpu backface-hidden`}
               width={imgBottom.width}
               height={imgBottom.height}
               priority
@@ -208,7 +197,7 @@ export const VillaHome = ({ blocks }) => {
                 <Image
                   src={imgBed.url}
                   alt={imgBed.alt || "Image"}
-                  className={`object-cover w-2/3 lg:w-full lg:w-[${imgBed.width}px] h-[${imgBed.height}px] aspect-[${imgBed.width}/${imgBed.height}] pointer-events-none will-change-transform`}
+                  className={`object-cover w-2/3 lg:w-full lg:w-[${imgBed.width}px] h-[${imgBed.height}px] aspect-[${imgBed.width}/${imgBed.height}] pointer-events-none transform-gpu backface-hidden`}
                   width={imgBed.width}
                   height={imgBed.height}
                   priority
