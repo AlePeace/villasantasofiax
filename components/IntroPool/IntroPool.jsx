@@ -35,9 +35,25 @@ export const IntroPool = ({ blocks }) => {
         },
       });
 
-      if (heading) tl.from(heading, { x: -40, opacity: 0, duration: 1, ease: "power2.out" });
-      if (para) tl.from(para, { y: 20, opacity: 0, duration: 0.8, ease: "power2.out" }, "-=0.5");
-      if (btn) tl.from(btn, { y: 15, opacity: 0, duration: 0.7, ease: "power2.out" }, "-=0.4");
+      if (heading)
+        tl.from(heading, {
+          x: -40,
+          opacity: 0,
+          duration: 1,
+          ease: "power2.out",
+        });
+      if (para)
+        tl.from(
+          para,
+          { y: 20, opacity: 0, duration: 0.8, ease: "power2.out" },
+          "-=0.5",
+        );
+      if (btn)
+        tl.from(
+          btn,
+          { y: 15, opacity: 0, duration: 0.7, ease: "power2.out" },
+          "-=0.4",
+        );
 
       if (accent) {
         gsap.from(accent, {
@@ -90,7 +106,11 @@ export const IntroPool = ({ blocks }) => {
             )}
             {buttons?.innerBlocks?.length > 0 && (
               <div className="intro-pool-btn">
-                <Buttons blocks={buttons.innerBlocks} variant="CilentoHome" />
+                <Buttons
+                  blocks={buttons.innerBlocks}
+                  variant="CilentoHome"
+                  target="_blank"
+                />
               </div>
             )}
           </div>

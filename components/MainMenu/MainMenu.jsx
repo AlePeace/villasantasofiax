@@ -142,6 +142,8 @@ export const MainMenu = ({
           <div className="flex justify-end">
             <Link
               href={prenotaUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className={`relative font-montecatini rounded-[14px] uppercase lg:text-xl text-sm tracking-[0.18em] transition-all duration-500 bg-bookh/30 py-4 lg:py-5 px-6 lg:px-8 hover:bg-blue text-white`}
             >
               {t("prenotaOra")}

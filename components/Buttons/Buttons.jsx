@@ -5,6 +5,7 @@ export const Buttons = ({
   className = "",
   variant = "default",
   decoration,
+  target,
 }) => {
   const getVariantStyles = () => {
     switch (variant) {
@@ -58,6 +59,7 @@ export const Buttons = ({
               url={block.attributes?.url}
               content={block.attributes?.content}
               className={getButtonStyles()}
+              target={target}
             />
           );
         }
