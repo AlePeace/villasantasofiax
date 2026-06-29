@@ -40,5 +40,9 @@ export default function Template({ children }) {
     { scope: el },
   );
 
-  return <div ref={el}>{children}</div>;
+  return (
+    <div ref={el} className="page-content">
+      {children}
+    </div>
+  );
 }

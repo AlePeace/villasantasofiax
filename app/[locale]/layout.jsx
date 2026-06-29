@@ -12,6 +12,7 @@ import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
 import CookieConsentBanner from "components/CookieConsent/CookieConsent";
 import { TranslationsProvider } from "components/TranslationsProvider";
+import { PageTransition } from "components/PageTransition";
 
 const montecatini = localFont({
   src: [
@@ -57,6 +58,7 @@ export default async function LocaleLayout({ children, params }) {
         <NextIntlClientProvider messages={messages}>
           <TranslationsProvider>
             <SmoothScroll>
+              <PageTransition />
               <MainMenu menuData={menus} menus={menus} bgImage={bgImage} />
               {children}
               <CookieConsentBanner />
