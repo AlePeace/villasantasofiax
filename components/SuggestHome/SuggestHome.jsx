@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { Heading } from "components/Heading";
 import { Paragraph } from "components/Paragraph";
+import { Buttons } from "components/Buttons";
 import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -16,6 +17,7 @@ export const SuggestHome = ({ blocks }) => {
   const paragraph = innerBlocks.find(
     (block) => block.name === "core/paragraph",
   );
+  const buttons = innerBlocks.find((block) => block.name === "core/buttons");
   const images = innerBlocks.filter((block) => block.name === "core/image");
   const firstImage = images[0];
   const secondImage = images[1];
@@ -226,6 +228,9 @@ export const SuggestHome = ({ blocks }) => {
                   className="font-nunito font-light text-gray text-base lg:text-lg xl:text-xl"
                 />
               </div>
+            )}
+            {buttons && (
+              <Buttons blocks={buttons.innerBlocks} variant="CilentoHome" />
             )}
           </div>
           <div className="flex gap-3 lg:gap-5 items-stretch lg:basis-1/2">
